@@ -44,7 +44,7 @@ public class PrefixToPostfixProcessor {
 			outputWriter = new BufferedWriter(new FileWriter(outputFile)); // output file
 
 			outputWriter.write("");
-			convertPrefixToPostfix(inputReader, outputWriter); // execute main process
+			processFile(inputReader, outputWriter); // execute main process
 
 		} catch (FileNotFoundException e) {
 			LOGGER.error("file not found:" + inputFile);
@@ -66,9 +66,85 @@ public class PrefixToPostfixProcessor {
 		}
 	}
 
-	private static void convertPrefixToPostfix(FileReader inputReader, BufferedWriter outputWriter) {
-		// TODO complete logic
+	private static void processFile(FileReader inputReader, BufferedWriter outputWriter) throws IOException, Exception {
+
+
+		int cInt;
+		boolean prefixValid = true;
+		boolean prefixConversionComplete = true;
+		String prefixString = "";
+		String postfixString = "";
 		
+		LOGGER.info("Begin reading input file char by char.");
+		while ((cInt = inputReader.read()) != -1) { // read and process one character
+			prefixConversionComplete = false;
+
+			if (!isWhiteSpace(cInt)) {
+				
+				char c = (char) cInt;
+
+				// append character to postfixString
+				prefixString += c;
+
+				// process character
+				if (prefixValid) {
+					LOGGER.trace("Validating character: " + String.valueOf(c));
+					prefixValid = validateCharacter(cInt);
+				}
+
+			} // if (end of line)
+			else if (String.valueOf((char) cInt).equals("\n") || String.valueOf((char) cInt).equals("\r")) {
+
+				LOGGER.trace("Linebreak character identified - prefix conversion complete");
+				
+				postfixString = convertPrefixToPostfix(prefixString);
+
+				prefixConversionComplete = true;
+
+			}
+			
+			if (prefixConversionComplete) { // document results when linebreak is found
+				
+				LOGGER.debug("documenting results of complete prefix conversion");
+				
+				documentResults(prefixValid, prefixString, postfixString);
+				
+				// reset everything to start as new
+				prefixString = "";
+				postfixString = "";
+				prefixValid = true;
+			}
+		}
+	}
+
+	private static String convertPrefixToPostfix(String prefixString) {
+		// TODO fill with recursion logic -- see https://www.lavivienpost.com/convert-prefix-to-postfix-code/
+		return null;
+	}
+
+	private static void documentResults(boolean prefixValid, String prefixString, String postfixString) {
+		// TODO complete/validate
+		
+		writeStringToFile(outputWriter, "---------------------------------------------");
+
+		// if (end of line) and (prefix string is valid) and (operand stack is empty):
+		// write stack to file
+		if (prefixValid) {
+
+			LOGGER.debug("prefix expression (" + prefixString + "):\t VALID.");
+
+			prefixString += " as postfix string sequence:";
+			writeStringToFile(outputWriter, prefixString);
+			writeStringToFile(outputWriter, postfixString); 
+			
+		} else {
+			// write INVALID to output file for given prefix string
+			LOGGER.debug("prefix expression (" + prefixString + "):\t INVALID.");
+
+			prefixString += " is an INVALID prefix expression\n";
+			writeStringToFile(outputWriter, prefixString);
+
+		}
 	}
 
 	/**
@@ -96,42 +172,20 @@ public class PrefixToPostfixProcessor {
 	 * postfixValid = false
 	 * 
 	 * @param cInt
-	 * @return postfixValid (bool) representing whether postfix string is valid
+	 * @return prefixValid (bool) representing whether prefix is valid
 	 * @throws Exception
 	 */
-	private static boolean processCharacter(int cInt) throws Exception {
+	private static boolean validateCharacter(int cInt) throws Exception {
 
 		char c = (char) cInt;
 		boolean postfixValid = true;
+		
+		
+		
+		
 
 		return postfixValid;
 
-	}
-
-	/**
-	 * Returns the string representing the given operator in the machine lang e.g.
-	 * '+' returns "AD"
-	 * 
-	 * @param operator
-	 * @return machineOperator
-	 * @throws Exception
-	 */
-	private static String translateOperator(char operator) throws Exception {
-
-		// return translated operators for +, -, *, and /
-		if (operator == '+') {
-			return "AD";
-		} else if (operator == '-') {
-			return "SB";
-		} else if (operator == '*') {
-			return "ML";
-		} else if (operator == '/') {
-			return "DV";
-		} else if (operator == '$' || operator == '^') {
-			return "PW";
-		} else {
-			throw new Exception("the provided character is not a valid operator");
-		}
 	}
 
 	/**
