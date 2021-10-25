@@ -2,6 +2,7 @@ package prefix_to_postfix;
 
 import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,8 +13,7 @@ import org.apache.logging.log4j.LogManager;
 
 /**
  * This class executes the main method which takes in 2 arguments: inputFile and
- * outputFile The program will functionally do the following: 
- * 		- ??????
+ * outputFile The program will functionally do the following: - ??????
  * 
  * @author zachbialik
  *
@@ -25,13 +25,15 @@ public class PrefixToPostfixProcessor {
 	private static FileReader inputReader = null;
 	private static BufferedWriter outputWriter = null;
 
+	private static boolean prefixValid = true;
+
 	public static void main(String[] args) throws Exception {
-		
+
 		if (args.length != 2) {
 			String msg = "you must provide exactly 2 input args: inputFile and outputFile.";
 			throw new Exception(msg);
 		}
-		
+
 		String inputFile = args[0];
 		String outputFile = args[1];
 
@@ -68,78 +70,69 @@ public class PrefixToPostfixProcessor {
 
 	private static void processFile(FileReader inputReader, BufferedWriter outputWriter) throws IOException, Exception {
 
+		String prefix;
+		String postfix;
 
-		int cInt;
-		boolean prefixValid = true;
-		boolean prefixConversionComplete = true;
-		String prefixString = "";
-		String postfixString = "";
-		
-		LOGGER.info("Begin reading input file char by char.");
-		while ((cInt = inputReader.read()) != -1) { // read and process one character
-			prefixConversionComplete = false;
+		LOGGER.info("Begin reading input file line by line.");
 
-			if (!isWhiteSpace(cInt)) {
-				
-				char c = (char) cInt;
+		try (BufferedReader br = new BufferedReader(inputReader)) {
 
-				// append character to postfixString
-				prefixString += c;
+			String line;
 
-				// process character
-				if (prefixValid) {
-					LOGGER.trace("Validating character: " + String.valueOf(c));
-					prefixValid = validateCharacter(cInt);
+			while ((line = br.readLine()) != null) { // execute conversion for each line
+
+				if (!line.isBlank() && !line.isEmpty()) { // only process lines that contain non-whitespace
+					prefix = line.trim(); // remove white space
+					postfix = prefixToPostfix(prefix, 0);
+					documentResults(prefix, postfix);
 				}
-
-			} // if (end of line)
-			else if (String.valueOf((char) cInt).equals("\n") || String.valueOf((char) cInt).equals("\r")) {
-
-				LOGGER.trace("Linebreak character identified - prefix conversion complete");
-				
-				postfixString = convertPrefixToPostfix(prefixString);
-
-				prefixConversionComplete = true;
-
-			}
-			
-			if (prefixConversionComplete) { // document results when linebreak is found
-				
-				LOGGER.debug("documenting results of complete prefix conversion");
-				
-				documentResults(prefixValid, prefixString, postfixString);
-				
-				// reset everything to start as new
-				prefixString = "";
-				postfixString = "";
-				prefixValid = true;
 			}
 		}
 	}
 
-	private static String convertPrefixToPostfix(String prefixString) {
-		// TODO fill with recursion logic -- see https://www.lavivienpost.com/convert-prefix-to-postfix-code/
-		return null;
+	private static String prefixToPostfix(String prefix, int index) {
+
+		String out = "";
+
+		if (index + 1 == prefix.length()) {
+			return Character.toString(prefix.charAt(index));
+		} else if (index + 1 > prefix.length()) {
+			return "";
+		}
+
+		char firstChar = prefix.charAt(index);
+
+		if (isOperator(firstChar)) { // first char is operator
+			String o1 = prefixToPostfix(prefix, index + 1) + firstChar;
+			String o2 = prefixToPostfix(prefix, index + o1.length());
+			out = o1 + o2;
+		} else if (isOperand(firstChar)) { // first char is operand
+
+			if (isOperator(prefix.charAt(index + 1))) { // next is operator
+				out = firstChar + prefixToPostfix(prefix, index + 1);
+			} else if (isOperand(prefix.charAt(index + 1))) { // next is operand
+				out = prefix.substring(index, index + 2);
+			}
+		}
+
+		return out;
+
 	}
 
-	private static void documentResults(boolean prefixValid, String prefixString, String postfixString) {
-		// TODO complete/validate
-		
+	private static void documentResults(String prefixString, String postfixString) {
+
 		writeStringToFile(outputWriter, "---------------------------------------------");
 
 		// if (end of line) and (prefix string is valid) and (operand stack is empty):
 		// write stack to file
 		if (prefixValid) {
+			String line = prefixString + " converts to postfix: " + postfixString;
+			LOGGER.debug(line);
+			writeStringToFile(outputWriter, line);
 
-			LOGGER.debug("prefix expression (" + prefixString + "):\t VALID.");
-
-			prefixString += " as postfix string sequence:";
-			writeStringToFile(outputWriter, prefixString);
-			writeStringToFile(outputWriter, postfixString); 
-			
 		} else {
 			// write INVALID to output file for given prefix string
-			LOGGER.debug("prefix expression (" + prefixString + "):\t INVALID.");
+			LOGGER.debug("prefix expression (" + prefixString + "): INVALID.");
 
 			prefixString += " is an INVALID prefix expression\n";
 			writeStringToFile(outputWriter, prefixString);
@@ -162,29 +155,6 @@ public class PrefixToPostfixProcessor {
 			LOGGER.fatal("caught i/o error while appending string (" + line + ") to file.");
 			e.printStackTrace();
 		}
-
-	}
-
-	/**
-	 * If character is operand: push to operandStackLinked return postfixValid =
-	 * true Else If character is operator: determine machine language steps and
-	 * append to machineLangStackLinked return postfixValid = true Else: return
-	 * postfixValid = false
-	 * 
-	 * @param cInt
-	 * @return prefixValid (bool) representing whether prefix is valid
-	 * @throws Exception
-	 */
-	private static boolean validateCharacter(int cInt) throws Exception {
-
-		char c = (char) cInt;
-		boolean postfixValid = true;
-		
-		
-		
-		
-
-		return postfixValid;
 
 	}
 
@@ -213,16 +183,6 @@ public class PrefixToPostfixProcessor {
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	private static boolean isWhiteSpace(int cInt) throws Exception {
-
-		char c = (char) cInt;
-		if (!String.valueOf(cInt).matches(".") && !String.valueOf(c).equals(" ")) {
-			return false;
-		} else {
-			return true;
 		}
 	}
 

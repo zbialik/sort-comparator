@@ -1,0 +1,149 @@
++A*BC   --> ABC*+
++*AB/CD --> AB*CD/+
+-*A^B+C-DE*FG --> ABCDE-+^*FG*-
+-*A^B+C-DE*FG --> ABCDE-FG*+^*- (wrong)
+++A*BCD --> ABC*+D+
+
+
+reading String char by char
+
+conditions:
+	- curr char is operator
+	- curr char is operand AND next char operator
+	- curr char is operand AND next char is operand
+
+postfixStack;
+count = 0;
+
+func(++A**BCDE, 0) - should return ABC*D*+E+
+	'+' is operator:
+		op1 = func(++A**BCDE, 1) + "+"
+			'+' is operator:
+				op1 = func(++A**BCDE, 2) + "+"
+					'A' is operand and '*' is operator:
+						count++ (1)
+						return "A" + func(++A**BCDE, 3)
+							'*' is operator:
+								op1 = func(++A**BCDE, 4) + "*"
+									'*' is operator:
+										op1 = func(++A**BCDE, 5) + "*"
+											'B' is operand and 'C' is operand:
+												return "BC"
+											return "BC*"
+										op2 = func(++A**BCDE, 4 + op1.length()) // 7
+											if (7 == prefix.length() - count):
+												return 
+											return "D"
+										return "BC*D"
+									return "BC*D*"
+								op2 = func(++A**BCDE, 3 + op1.length())
+									return ""
+								return "BC*D*"
+						return "ABC*D*"
+					return "ABC*D*+"
+				op2 = func(++A**BCDE, 1 + op1.length()) // 8
+					return "E"
+				return "ABC*D*+" + "E"
+		op2 = func(++A**BCDE, 0 + op1.length())
+			return ""
+		return "ABC*D*+E+"
+
+
+
+func(++A*BCD,0) - should return ABC*+D+
+	'+' is operator:
+		op1 = func(++A*BCD, 1) + "+"
+			'+' is operator:
+				op1 = func(++A*BCD, 2) + "+"
+					'A' is operand AND '*' is operator:
+						return "A" + func(++A*BCD, 3)
+							'*' is operator:
+								op1 = func(++A*BCD, 4) + "*"
+									'B' is operand AND 'C' is operand:
+										return "BC"
+									return "BC*"
+								op2 = func(++A*BCD, 3 + op1.length()) // 6
+									PUSH "D"
+									return ""
+								return "BC*"
+						return "ABC*"
+					return "ABC*+D" // somehow get this
+				op2 = func(++A*BCD, 1 + op1.length()) // 7
+					return ""
+				return "ABC*+"
+			return "ABC*++"
+		op2 = func(++A*BCD, 0 + op1.length()) // 6
+			'C' is operand AND 'D' is operand:
+				return "CD"
+		
+		return "
+		
+
+
+func("+*AB/CD", 0) - should return AB*CD/+
+	'+' is operator:
+		op1 = func("+*AB/CD", 1) + "+"
+			'*' is operator:
+				op1 = func("+*AB/CD", 2) + "*"
+					'A' is operand AND 'B' is operand:
+						return "AB"
+				
+				op2 = func("+*AB/CD", index + op1.length()) // index + op1.length() = 4
+					'/' is operator:
+						op1 = func("+*AB/CD", 5) + "/"
+							'C' is operand AND 'D' is operand:
+								return "CD"
+						
+						op2 = func("+*AB/CD", index + op1.length()) // index + op1.length() = 7
+							return ""
+						
+						return "CD" + "/" + ""
+						
+				return "AB*" + "CD/"
+		
+		op2 = func("+*AB/CD", index + op1.length()) // index + op1.length() = 7
+			return ""
+		
+		return "AB*CD/" + "*" + ""
+
+
+func("+A*BC", 0) - should return ABC*+
+	'+' is operator:
+		op1 = func("+A*BC", 1) + "+"
+			'A' is operand AND '*' is operator:
+				return "A" + func("+A*BC", 2)
+					'*' is operator:
+						op1 = func("+A*BC", 3) + "*"
+							'B' is operand AND 'C' is operand:
+								return "BC"
+						op2 = func("+A*BC", 2 + op1.length()) // index + op1.length() = 5
+							return ""
+						return "BC*"
+				return "ABC*"
+			return "ABC*+"
+		
+		op2 = func("+A*BC", index + op1.length()) // index + op1.length() = 5
+			return ""
+		
+		return "ABC*+"
+			
+
+		
+func("-+ABC", 0) - should return AB+C-
+	'-' is operator:
+		op1 = func("-+ABC", 1) + "-"
+			'+' is operator:
+				op1 = func("-+ABC", 2) + "+"
+					'A' is operand AND 'B' is operand
+						return "AB"
+				op2 = func("-+ABC", index + op1.length()) // index + op1.length() = 4
+					'C' is operand and 'C' is operand:
+						return "BC"
+					
+		
+		op1 = func("+*AB/CD", index + op1.length())
+		
+		
+		
+		
+

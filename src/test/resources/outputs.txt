@@ -1,0 +1,24 @@
+---------------------------------------------
+-+ABC converts to postfix: AB+C-
+---------------------------------------------
+-A+BC converts to postfix: ABC+-
+---------------------------------------------
+^+-ABC+D-EF converts to postfix: AB-CDEF-++^
+---------------------------------------------
+-*A^B+C-DE*FG converts to postfix: ABCDE-FG*+^*-
+---------------------------------------------
+**A+BC+C-BA converts to postfix: ABC+CBA-+**
+---------------------------------------------
+/A+BC +C*BA converts to postfix: ABC+/
+---------------------------------------------
+*-*-ABC+BA converts to postfix: AB-CBA+*-*
+---------------------------------------------
+/+/A-BC-BA converts to postfix: ABC-BA-/+/
+---------------------------------------------
+*$A+BC+C-BA converts to postfix: ABC+CBA-+$*
+---------------------------------------------
+//A+B0-C+BA converts to postfix: A+//
+---------------------------------------------
+*$A^BC+C-BA converts to postfix: ABC^CBA-+$*
+---------------------------------------------
++*AB/CD converts to postfix: AB*CD/+
