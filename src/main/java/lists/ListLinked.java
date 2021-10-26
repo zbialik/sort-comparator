@@ -76,7 +76,7 @@ public class ListLinked implements List {
 	 */
 	public String remove(int index) throws Exception {
 		ListNode temp;
-		if (index < 0 || index > this.size) { // validate
+		if (index < 0 || index > this.size || this.size == 0) { // validate
 			String msg = "index out of bounds: " + index;
 			throw new Exception(msg);
 		} else {
@@ -103,7 +103,7 @@ public class ListLinked implements List {
 	 */
 	private ListNode getListNode(int index) throws Exception {
 		ListNode here;
-		if (index < 0 || index > this.size) { // validate
+		if (index < 0 || index > this.size || this.size == 0) { // validate
 			String msg = "index out of bounds: " + index;
 			throw new Exception(msg);
 		} else {
