@@ -10,7 +10,8 @@
 //A+B0-C+BA
 *$A^BC+C-BA		
 +*AB/CD			
-B!AD							
++!AD							
+D-+ABC-
 				
 					
 					

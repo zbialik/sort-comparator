@@ -86,8 +86,8 @@ public class PrefixToPostfixProcessor {
 	 */
 	private static void processFile(FileReader inputReader, BufferedWriter outputWriter) throws IOException, Exception {
 
-		String prefix;
-		String postfix;
+		String prefix = "";
+		String postfix = "";
 
 		String line;
 		ListLinked prefixList = new ListLinked();
@@ -103,18 +103,23 @@ public class PrefixToPostfixProcessor {
 					prefix = line.trim().replaceAll("\\s+",""); // remove white space
 					prefixList.clear();
 					
-					for (int i = 0; i < prefix.length(); i++) {
-						prefixList.insert(Character.toString(prefix.charAt(i)), i);
-					}
+					if (!isOperator(prefix.charAt(0))) {
+						prefixValid = false;
+						errorMessage = "first character in prefix expression must be operator (char: "+prefix.charAt(0)+")";
+					} else {
+						for (int i = 0; i < prefix.length(); i++) {
+							prefixList.insert(Character.toString(prefix.charAt(i)), i);
+						}
 
-					// your recursion
-					postfix = prefixToPostfix(prefixList).toString();
-					
-					if (prefixValid) { // check one final time if prefix was valid but not for entire string
-						if (postfix.length() < prefix.length()) {
-							prefixValid = false;
-							closedIndex = prefix.length() - postfix.length() - 1;
-							errorMessage = "prefix prematurely closed at index: " + closedIndex + " (operand: "+prefix.charAt(closedIndex)+")";
+						// your recursion
+						postfix = prefixToPostfix(prefixList).toString();
+						
+						if (prefixValid) { // check one final time if prefix was valid but not for entire string
+							if (postfix.length() < prefix.length()) {
+								prefixValid = false;
+								closedIndex = prefix.length() - postfix.length() - 1;
+								errorMessage = "prefix prematurely closed at index: " + closedIndex + " (operand: "+prefix.charAt(closedIndex)+")";
+							}
 						}
 					}
 					

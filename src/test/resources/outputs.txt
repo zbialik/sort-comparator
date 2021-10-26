@@ -35,5 +35,8 @@ prefix //A+B0-C+BA could not be converted: invalid character: 0
 +*AB/CD converts to postfix: AB*CD/+
 
 ---------------------------------------------
-prefix B!AD could not be converted: invalid character: !
+prefix +!AD could not be converted: invalid character: !
+
+---------------------------------------------
+prefix D-+ABC- could not be converted: first character in prefix expression must be operator (char: D)
 
