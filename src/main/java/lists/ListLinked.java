@@ -2,8 +2,8 @@ package lists;
 
 public class ListLinked implements List {
 
-	private ListNode head;
-	private int size;
+	public ListNode head;
+	public int size;
 
 	public ListLinked() {
 		this.head = null;
@@ -47,7 +47,7 @@ public class ListLinked implements List {
 	 * @param data
 	 * @throws Exception 
 	 */
-	public void insert(Object data, int index) throws Exception {
+	public void insert(String data, int index) throws Exception {
 		
 		if (index < 0 || index > this.size) { // validate
 			String msg = "index out of bounds: " + index;
@@ -74,7 +74,7 @@ public class ListLinked implements List {
 	 * @return nodeData
 	 * @throws Exception 
 	 */
-	public Object remove(int index) throws Exception {
+	public String remove(int index) throws Exception {
 		ListNode temp;
 		if (index < 0 || index > this.size) { // validate
 			String msg = "index out of bounds: " + index;
@@ -122,21 +122,14 @@ public class ListLinked implements List {
 	 * @return stackString
 	 */
 	public String toString() {
-		String stackString = "[ ";
+		String stackString = "";
 
-		for (int i = 0; i < this.size - 1; i++) {
+		for (int i = 0; i < this.size; i++) {
 			try {
-				stackString += (String) this.getListNode(i).data + ", ";
+				stackString += (String) this.getListNode(i).data;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		
-		// add last node
-		try {
-			stackString += (String) this.getListNode(this.size - 1).data + " ]";
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		return stackString;

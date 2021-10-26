@@ -2,7 +2,7 @@ package lists;
 
 public class ListNode {
 	
-	public Object data;
+	public String data;
 	public ListNode next;
 	
 }

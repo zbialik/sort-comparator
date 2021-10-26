@@ -80,46 +80,52 @@ public class PrefixToPostfixProcessor {
 		try (BufferedReader br = new BufferedReader(inputReader)) {
 
 			String line;
-
+			ListLinked prefixList = new ListLinked();
+			
 			while ((line = br.readLine()) != null) { // execute conversion for each line
 
 				if (!line.isBlank() && !line.isEmpty()) { // only process lines that contain non-whitespace
 					prefix = line.trim(); // remove white space
-					postfix = prefixToPostfix(prefix, 0);
+					for (int i=0; i < prefix.length(); i++) {
+						prefixList.insert(Character.toString(prefix.charAt(i)), i);
+					}
+					
+					// your recursion
+					postfix = prefixToPostfix(prefixList).toString();
 					documentResults(prefix, postfix);
 				}
 			}
 		}
 	}
-
-	private static String prefixToPostfix(String prefix, int index) {
-
-		String out = "";
-
-		if (index + 1 == prefix.length()) {
-			return Character.toString(prefix.charAt(index));
-		} else if (index + 1 > prefix.length()) {
-			return "";
-		}
-
-		char firstChar = prefix.charAt(index);
-
-		if (isOperator(firstChar)) { // first char is operator
-			String o1 = prefixToPostfix(prefix, index + 1) + firstChar;
-			String o2 = prefixToPostfix(prefix, index + o1.length());
-			out = o1 + o2;
-		} else if (isOperand(firstChar)) { // first char is operand
-
-			if (isOperator(prefix.charAt(index + 1))) { // next is operator
-				out = firstChar + prefixToPostfix(prefix, index + 1);
-			} else if (isOperand(prefix.charAt(index + 1))) { // next is operand
-				out = prefix.substring(index, index + 2);
-			}
-		}
-
-		return out;
-
-	}
+	
+	//Use recursion, Time O(n), Space O(n)
+    public static ListLinked prefixToPostfix(ListLinked exp) throws Exception {
+        String op = exp.remove(0);
+        ListLinked op1 = new ListLinked();
+        ListLinked op2 = new ListLinked();
+        
+        if (isOperator(exp.head.data.charAt(0))) {
+        	op1 = prefixToPostfix(exp);
+        } else {
+        	op1.insert(exp.remove(0), 0);
+        }
+        
+        if (isOperator(exp.head.data.charAt(0))) {
+        	op2 = prefixToPostfix(exp);
+        } else {
+        	op2.insert(exp.remove(0), 0);
+        }
+        
+        ListLinked output = new ListLinked();
+        while (!op1.isEmpty()) {
+        	output.insert(op1.remove(0), output.size);
+        }
+        while (!op2.isEmpty()) {
+        	output.insert(op2.remove(0), output.size);
+        }
+        output.insert(op, output.size);
+        return output;
+    }
 
 	private static void documentResults(String prefixString, String postfixString) {
 
