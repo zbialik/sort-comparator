@@ -1,5 +1,7 @@
 package prefix_to_postfix;
 
+import lists.*;
+
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;

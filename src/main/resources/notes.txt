@@ -1,19 +1,48 @@
-+A*BC   --> ABC*+
-+*AB/CD --> AB*CD/+
--*A^B+C-DE*FG --> ABCDE-+^*FG*-
--*A^B+C-DE*FG --> ABCDE-FG*+^*- (wrong)
-++A*BCD --> ABC*+D+
 
 
-reading String char by char
+prefix:  ++A**BCDE
+postfix: ABC*D*+E+
+
+
+Init Step:
+	postfix = []
+
+Step 1:
+	'+' is operator:
+		postfix = ++A**BCDE
+
+Step 2:
+	'+' is operator:
+		postfixList = [A**BCDE, +, +]
+
+Step 3:
+	'A' is operand AND '*' is operator:
+		postfixList = [A**BCDE, +, +]
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 conditions:
 	- curr char is operator
 	- curr char is operand AND next char operator
 	- curr char is operand AND next char is operand
-
-postfixStack;
-count = 0;
 
 func(++A**BCDE, 0) - should return ABC*D*+E+
 	'+' is operator:
@@ -21,7 +50,6 @@ func(++A**BCDE, 0) - should return ABC*D*+E+
 			'+' is operator:
 				op1 = func(++A**BCDE, 2) + "+"
 					'A' is operand and '*' is operator:
-						count++ (1)
 						return "A" + func(++A**BCDE, 3)
 							'*' is operator:
 								op1 = func(++A**BCDE, 4) + "*"
