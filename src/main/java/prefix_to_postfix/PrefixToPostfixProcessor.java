@@ -122,6 +122,7 @@ public class PrefixToPostfixProcessor {
 					
 					// reset to true
 					prefixValid = true; 
+					errorMessage = "prefix is invalid";
 				}
 			}
 		}
