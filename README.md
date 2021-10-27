@@ -15,12 +15,12 @@ You can download the source code from git like so (if provided the package as pa
 
 ```
 git clone git@github.com:zbialik/prefix-to-postfix.git
+cd prefix-to-postfix
 ```
 
 You can then build the code by executing:
 
 ```
-cd prefix-to-postfix
 mvn clean
 mvn compile
 mvn package
