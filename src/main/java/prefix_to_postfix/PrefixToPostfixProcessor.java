@@ -91,6 +91,7 @@ public class PrefixToPostfixProcessor {
 
 		String line;
 		ListLinked prefixList = new ListLinked();
+		ListLinked postfixList = new ListLinked();
 		int closedIndex;
 
 		LOGGER.info("Begin reading input file line by line.");
@@ -112,7 +113,8 @@ public class PrefixToPostfixProcessor {
 						}
 
 						// your recursion
-						postfix = prefixToPostfix(prefixList).toString();
+						postfixList = prefixToPostfix(prefixList);
+						postfix = postfixList.toString();
 						
 						if (prefixValid) { // check one final time if prefix was valid but not for entire string
 							if (postfix.length() < prefix.length()) {
