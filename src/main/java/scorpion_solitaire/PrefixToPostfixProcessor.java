@@ -1,4 +1,4 @@
-package prefix_to_postfix;
+package scorpion_solitaire;
 
 import lists.*;
 
