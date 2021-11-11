@@ -74,7 +74,7 @@ public class ListLinked implements List {
 	 * @return nodeData
 	 * @throws Exception 
 	 */
-	public String remove(int index) throws Exception {
+	public Object remove(int index) throws Exception {
 		ListNode temp;
 		if (index < 0 || index > this.size || this.size == 0) { // validate
 			String msg = "index out of bounds: " + index;
@@ -114,24 +114,5 @@ public class ListLinked implements List {
 		}
 		
 		return here;
-	}
-
-	/**
-	 * Converts stack to string for printing and troubleshooting support
-	 * 
-	 * @return stackString
-	 */
-	public String toString() {
-		String stackString = "";
-
-		for (int i = 0; i < this.size; i++) {
-			try {
-				stackString += (String) this.getListNode(i).data;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		return stackString;
 	}
 }
