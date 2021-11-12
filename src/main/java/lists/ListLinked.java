@@ -17,15 +17,6 @@ public class ListLinked implements List {
 	}
 
 	/**
-	 * Returns the size of the stack
-	 * 
-	 * @return size
-	 */
-	public int size() {
-		return this.size;
-	}
-
-	/**
 	 * Returns true if stack size is 0 and false is greater than 0 throws exception
 	 * 
 	 * @return empty (bool)
@@ -42,12 +33,22 @@ public class ListLinked implements List {
 	}
 
 	/**
-	 * Creates node with provided data and appends node to top of stack
+	 * Creates node with provided data and appends to top of the list
 	 * 
 	 * @param data
 	 * @throws Exception 
 	 */
-	public void insert(String data, int index) throws Exception {
+	public void append(Object data) throws Exception {
+		insert(data, this.size);
+	}
+
+	/**
+	 * Creates node with provided data and inserts to list where defined
+	 * 
+	 * @param data
+	 * @throws Exception 
+	 */
+	public void insert(Object data, int index) throws Exception {
 		
 		if (index < 0 || index > this.size) { // validate
 			String msg = "index out of bounds: " + index;
@@ -101,7 +102,7 @@ public class ListLinked implements List {
 	 * @return node
 	 * @throws Exception 
 	 */
-	private ListNode getListNode(int index) throws Exception {
+	public ListNode getListNode(int index) throws Exception {
 		ListNode here;
 		if (index < 0 || index > this.size || this.size == 0) { // validate
 			String msg = "index out of bounds: " + index;
