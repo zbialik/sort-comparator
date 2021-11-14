@@ -21,8 +21,6 @@ public class Play {
 	private static FileReader inputReader = null;
 
 	private static CardDeck deck;
-	private static ListLinked[] tableau = createBoard(); // Array of ListLinked objects holding Card objects
-	private static ListLinked reserve = new ListLinked(); // ListLinked object holding 3 or 0 Card objects
 
 	public static void main(String[] args) throws Exception {
 
@@ -39,12 +37,14 @@ public class Play {
 
 		try {
 			inputReader = new FileReader(inputFile); // input file
-			deck = readCards(inputReader); // reads cards based on input file
+			ListLinked cards = readCards(inputReader); // reads cards based on input file
 
+			deck = new CardDeck(cards);
+			
 			// TODO: IMPLEMENT SHUFFLE DECK
 			// deck.shuffle();
-
-			dealCards(deck); // deals board and reserve cards based on input file
+			
+			deck.dealCards(); // deals to deck.tableau and deck.reserve
 
 			autoplay();
 
@@ -82,8 +82,6 @@ public class Play {
 
 		ListLinked[] move; // Array of ListLinked objects holding Card objects
 
-		int preventBadnessCount = 0;
-
 		while (!gameWon && !gameLost) {
 			
 			// print out game layout
@@ -95,7 +93,7 @@ public class Play {
 			if (move == null) {
 				gameLost = checkLoss(); // check if there is reserve , other wise we lost
 			} else {
-				tableau = move; // make move
+				deck.tableau = move; // make move
 			}
 
 			// check win status
@@ -122,7 +120,7 @@ public class Play {
 	private static boolean checkLoss() throws Exception {
 		boolean gameLost;
 
-		if (reserve.isEmpty()) {
+		if (deck.reserve.isEmpty()) {
 			LOGGER.info("no possible moves left AND reserve is empty - the game has been lost.");
 			gameLost = true;
 		} else {
@@ -149,8 +147,8 @@ public class Play {
 		int winningPiles = 0;
 
 		ListLinked col;
-		for (int i = 0; i < tableau.length; i++) { // loop through each column
-			col = tableau[i];
+		for (int i = 0; i < deck.tableau.length; i++) { // loop through each column
+			col = deck.tableau[i];
 			if (checkWinPile(col)) {
 				winningPiles++;
 			}
@@ -231,48 +229,48 @@ public class Play {
 		return board;
 	}
 
-	/**
-	 * Reads in the input file line by line and converts each prefix expression to
-	 * postfix and writes to the output file
-	 * 
-	 * @param inputReader
-	 * @param outputWriter
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	private static void dealCards(CardDeck deck) throws IOException, Exception {
-
-		/*
-		 * Read each card and append to appropriate "column" in 'board' Array OR add to reserve
-		 */
-		int j = 0; // use j to track column a card is being appended to
-		while (!deck.isEmpty()) {
-
-			Card card = (Card) deck.remove(0); // remove card from deck
-			if (deck.size > 2) { // append to board cards
-
-				// cards dealt to first 4 columns AND first 3 rows are faceDown
-				if (tableau[j].size < 3 && j < 4) {
-					card.faceUp = false;
-				} else {
-					card.faceUp = true;
-				}
-
-				tableau[j].append(card); // append card
-
-				// move to next column (or wrap to first column)
-				if (j == 6) {
-					j = 0; // start again at first column
-				} else {
-					j++; // increment to append next card to next column
-				}
-
-			} else { // append to reserve cards
-				card.faceUp = false;
-				reserve.append(card);
-			}
-		}
-	}
+//	/**
+//	 * Reads in the input file line by line and converts each prefix expression to
+//	 * postfix and writes to the output file
+//	 * 
+//	 * @param inputReader
+//	 * @param outputWriter
+//	 * @throws IOException
+//	 * @throws Exception
+//	 */
+//	private static void dealCards(CardDeck deck) throws IOException, Exception {
+//
+//		/*
+//		 * Read each card and append to appropriate "column" in 'board' Array OR add to reserve
+//		 */
+//		int j = 0; // use j to track column a card is being appended to
+//		while (!deck.isEmpty()) {
+//
+//			Card card = (Card) deck.remove(0); // remove card from deck
+//			if (deck.size > 2) { // append to board cards
+//
+//				// cards dealt to first 4 columns AND first 3 rows are faceDown
+//				if (tableau[j].size < 3 && j < 4) {
+//					card.faceUp = false;
+//				} else {
+//					card.faceUp = true;
+//				}
+//
+//				tableau[j].append(card); // append card
+//
+//				// move to next column (or wrap to first column)
+//				if (j == 6) {
+//					j = 0; // start again at first column
+//				} else {
+//					j++; // increment to append next card to next column
+//				}
+//
+//			} else { // append to reserve cards
+//				card.faceUp = false;
+//				reserve.append(card);
+//			}
+//		}
+//	}
 
 	/**
 	 * Distributes the reserve to the 3 left-most piles
@@ -282,11 +280,11 @@ public class Play {
 	private static void distributeReserve() throws Exception {
 
 		int col = 0;
-		while (!reserve.isEmpty()) {
+		while (!deck.reserve.isEmpty()) {
 
-			Card tmp = (Card) reserve.remove(0);
+			Card tmp = (Card) deck.reserve.remove(0);
 			tmp.faceUp = true;
-			tableau[col].append(tmp); // append reserve card to pile
+			deck.tableau[col].append(tmp); // append reserve card to pile
 
 			col++; // goto next column
 		}
@@ -353,7 +351,7 @@ public class Play {
 		ListLinked[] newTableau = createBoard();
 		
 		for (int i=0; i < newTableau.length; i++) {
-			newTableau[i] = tableau[i].clone();
+			newTableau[i] = deck.tableau[i].clone();
 		}
 		
 		// get curr and tail nodes
@@ -432,35 +430,24 @@ public class Play {
 
 		// find the max # of rows out of all columns in game board
 		int maxRows = 0;
-		for (int i = 0; i < tableau.length; i++) {
-			if (maxRows < tableau[i].size) {
-				maxRows = tableau[i].size;
+		for (int i = 0; i < deck.tableau.length; i++) {
+			if (maxRows < deck.tableau[i].size) {
+				maxRows = deck.tableau[i].size;
 			}
 		}
 
-		String[] cardsRow = new String[tableau.length];
-
-		// TODO: format output better
-		// String nameFormat = "| %1$-20s | ";
-		// String dateFormat = " %2$tb %2$td, %2$tY | ";
-		// String ageFormat = " %3$3s |%n";
-		// String format = nameFormat.concat(dateFormat).concat(ageFormat);
-		// String line = new String(new char[48]).replace('\0', '-');
-		//
-		// System.out.println(line);
-		// System.out.printf("|%s|%s|%n",
-		// StringUtils.center("Tableau", 35),
-		// StringUtils.center("Reserve", 15));
-		// System.out.println(line);
+		String[] cardsRow = new String[deck.tableau.length];
 
 		System.out.println();
 		for (int i = 0; i < maxRows; i++) {
-			for (int j = 0; j < tableau.length; j++) { // grab all card strings
+			for (int j = 0; j < deck.tableau.length; j++) { // grab all card strings
 
-				if (tableau[j].size <= i) { // just print empty string
+				if (deck.tableau[j].size <= i) { // just print empty string
 					cardsRow[j] = "";
+				} else if ( !((Card) deck.tableau[j].getListNode(i).data).faceUp ) {
+					cardsRow[j] = "??";
 				} else {
-					cardsRow[j] = tableau[j].getListNode(i).data.toString();
+					cardsRow[j] = deck.tableau[j].getListNode(i).data.toString();
 				}
 			}
 
@@ -470,8 +457,8 @@ public class Play {
 			}
 
 			if (i == 0) { // if first row, also print reserve cards (faceDown)
-				for (int j = 0; j < reserve.size; j++) {
-					System.out.printf("%8s", reserve.getListNode(j).data.toString());
+				for (int j = 0; j < deck.reserve.size; j++) {
+					System.out.printf("%8s", deck.reserve.getListNode(j).data.toString());
 				}
 			}
 
@@ -481,9 +468,9 @@ public class Play {
 		System.out.println();
 	}
 
-	private static CardDeck readCards(FileReader inputReader) throws Exception {
+	private static ListLinked readCards(FileReader inputReader) throws Exception {
 	
-		CardDeck deck = new CardDeck();
+		ListLinked deck = new ListLinked();
 	
 		try (BufferedReader br = new BufferedReader(inputReader)) {
 			LOGGER.info("Reading input file.");
@@ -570,18 +557,18 @@ public class Play {
 		int currIndex;
 		int bestScore = -10000; // start with a very low score
 		int currScore = -10000; // start with a very low score
-		for (int i = 0; i < tableau.length; i++) { // append all tail card nodes
+		for (int i = 0; i < deck.tableau.length; i++) { // append all tail card nodes
 			
-			tailPile = tableau[i].tail; // grab tail for column (NOTE: could be null)
+			tailPile = deck.tableau[i].tail; // grab tail for column (NOTE: could be null)
 			
 			/*
 			 * iterate over every card in tableau
 			 * 
 			 * for each card that can be appended to tailCardNode, score the move
 			 */
-			for (int j = 0; j < tableau.length; j++) {
+			for (int j = 0; j < deck.tableau.length; j++) {
 				if (i != j) { // not possible to move cards to same column
-					curr = tableau[j].head;
+					curr = deck.tableau[j].head;
 					currIndex = 0;
 					
 					while (curr != null) {

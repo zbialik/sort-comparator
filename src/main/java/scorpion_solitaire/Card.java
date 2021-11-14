@@ -16,27 +16,28 @@ public class Card {
 		this.faceUp = up;
 	}
 	
+	/**
+	 * standard toString for Card object
+	 * @param overrideFaceDown
+	 * @return
+	 */
 	public String toString() {
 		String output = "";
 		String value;
 		
-		if (this.faceUp) {
-			if (this.value == 1) {
-				value = "A";
-			} else if (this.value == 11) {
-				value = "J";
-			} else if (this.value == 12) {
-				value = "Q";
-			} else if (this.value == 13) {
-				value = "K";
-			} else {
-				value = String.valueOf(this.value);
-			}
-			
-			output = value + this.suit;
+		if (this.value == 1) {
+			value = "A";
+		} else if (this.value == 11) {
+			value = "J";
+		} else if (this.value == 12) {
+			value = "Q";
+		} else if (this.value == 13) {
+			value = "K";
 		} else {
-			output = "??";
+			value = String.valueOf(this.value);
 		}
+		
+		output = value + this.suit;
 		
 		return output;
 	}
