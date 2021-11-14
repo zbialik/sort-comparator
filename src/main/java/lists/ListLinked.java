@@ -3,10 +3,12 @@ package lists;
 public class ListLinked implements List {
 
 	public ListNode head;
+	public ListNode tail;
 	public int size;
 
 	public ListLinked() {
 		this.head = null;
+		this.tail = null;
 		this.size = 0;
 	}
 
@@ -55,18 +57,39 @@ public class ListLinked implements List {
 			throw new Exception(msg);
 		} else {
 			ListNode newNode = new ListNode(); // allocate space
-			newNode.data = data; //initialize new node with given data
-			this.size++; // update size
-			if (index == 0) { // insert at head of list
-				newNode.next = this.head ; // connect new node with old head
-				this.head = newNode; // update list header
+			newNode.data = data; // initialize new node with given data
+			
+			if (index == 0) { // insert as head
+				
+				newNode.next = this.head ; // connect new node to old head
+				newNode.prev= null; // set new node's prev to null
+				
+				if (this.isEmpty()) { // insert as tail if empty
+					this.tail = newNode;
+				} else { // update curr head.prev to point to new node
+					this.head.prev = newNode;
+				}
+				
+				this.head = newNode; // repoint head
+				
+			} else if (index == this.size) { // insert at tail of list
+				newNode.next = null ; // set new node's next
+				newNode.prev = this.tail ; // set new node's prev to curr tail
+				this.tail.next = newNode; // connect old tail to new node
+				
+				this.tail = newNode; // repoint tail
+				
 			} else { // generic insertion
-				ListNode after = getListNode(index-1); //Get ref to prev node
-				newNode.next = after.next; // point new node's next to next node
-				after.next = newNode; // point prev node's next to new node
+				ListNode prev = getListNode(index-1); //Get ref to prev node
+				ListNode after = getListNode(index); //Get ref to after node
+				newNode.next = after; // point new node's next to after nodee
+				newNode.prev = prev; // point new node's prev to prev node
+				prev.next = newNode; // point prev node's next to new node
+				after.prev = newNode; // point after node's prev to new node
 			}
+			
+			this.size++; // update size
 		}
-
 	}
 
 	/**
@@ -77,6 +100,7 @@ public class ListLinked implements List {
 	 */
 	public Object remove(int index) throws Exception {
 		ListNode temp;
+		
 		if (index < 0 || index > this.size || this.size == 0) { // validate
 			String msg = "index out of bounds: " + index;
 			throw new Exception(msg);
@@ -84,13 +108,30 @@ public class ListLinked implements List {
 			if (index == 0) { // delete at head of list
 				temp = this.head; // grab node for deletion
 				this.head = temp.next; // update list header
-			} else { // generic deletion
-				ListNode after = getListNode(index - 1); // Ref to prev node
-				temp = after.next; // Grab node for deletion
-				after.next = temp.next; // Connect head & tail
+				
+				if (this.size == 1) { // also repoint tail to null
+					this.tail = null;
+				} else { // update head prev pointer
+					this.head.prev = null; 
+				}
+				
+			} else {
+				ListNode prev = getListNode(index - 1); // Ref to prev node
+				temp = prev.next; // Grab node for deletion
+				prev.next = temp.next; // Connect head & tail
+				
+				if (index == this.size-1) { // deleting tail node
+					
+					this.tail = prev; // update tail
+					
+				} else { // generic deletion
+					ListNode after = temp.next; // get after node
+					after.prev = prev; // update after node to point to prev
+				}
 			}
 			this.size--; // Update size
 			temp.next = null; // disconnect node from list
+			temp.prev = null; // disconnect node from list
 			return temp.data; // Return deleted value
 
 		}
@@ -104,7 +145,7 @@ public class ListLinked implements List {
 	 */
 	public ListNode getListNode(int index) throws Exception {
 		ListNode here;
-		if (index < 0 || index > this.size || this.size == 0) { // validate
+		if (index < 0 || index >= this.size || this.size == 0) { // validate
 			String msg = "index out of bounds: " + index;
 			throw new Exception(msg);
 		} else {
@@ -115,5 +156,66 @@ public class ListLinked implements List {
 		}
 		
 		return here;
+	}
+	
+	/**
+	 * Returns the index for the provided node
+	 * 
+	 * @return index
+	 * @throws Exception 
+	 */
+	public int getNodeIndex(ListNode node) throws Exception {
+		
+		int index = 0;
+		
+		ListNode curr = this.head;
+		
+		while (curr != null && !curr.equals(node)) {
+			curr = curr.next;
+			index++;
+		}
+		
+		if (curr == null) {
+			String msg = "provided node is NOT in this list";
+			throw new Exception(msg);
+		} else {
+			return index;
+		}
+	}
+	
+	/**
+	 * Returns a clone of the list
+	 * 
+	 * @return index
+	 * @throws Exception
+	 */
+	public ListLinked clone() {
+
+		ListLinked copy = new ListLinked();
+
+		ListNode curr = this.head;
+		while (curr != null) {
+			try {
+				copy.append(curr.data);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			curr = curr.next;
+		}
+
+		return copy;
+	}
+	
+	public String toString() {
+		String output = "";
+		
+		ListNode curr = this.head;
+		while (curr != null) {
+			
+			output += " " + curr.data.toString();
+			curr = curr.next;
+		}
+		
+		return output;
 	}
 }

@@ -40,5 +40,12 @@ public class Card {
 		
 		return output;
 	}
+	
+	/**
+	 * provides a clone of this Card
+	 */
+	public Card clone() {
+		return new Card(this.value, this.suit, this.faceUp);
+	}
 
 }
