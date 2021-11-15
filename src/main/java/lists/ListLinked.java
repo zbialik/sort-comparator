@@ -218,4 +218,28 @@ public class ListLinked implements List {
 		
 		return output;
 	}
+	
+	public boolean equals(ListLinked list) {
+		boolean isEqual = true;
+		
+		if (list.size == this.size) {
+			ListNode curr1 = this.head;
+			ListNode curr2 = list.head;
+			
+			while (curr1 != null && curr2 != null) {
+				if (!curr1.data.equals(curr2.data)) {
+					isEqual = false;
+				}
+				
+				curr1 = curr1.next;
+				curr2 = curr2.next;
+			}
+			
+		} else {
+			isEqual = false;
+		}
+		
+		
+		return isEqual;
+	}
 }

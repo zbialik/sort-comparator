@@ -25,19 +25,23 @@ public class Card {
 		String output = "";
 		String value;
 		
-		if (this.value == 1) {
-			value = "A";
-		} else if (this.value == 11) {
-			value = "J";
-		} else if (this.value == 12) {
-			value = "Q";
-		} else if (this.value == 13) {
-			value = "K";
+		if (this.faceUp) {
+			if (this.value == 1) {
+				value = "A";
+			} else if (this.value == 11) {
+				value = "J";
+			} else if (this.value == 12) {
+				value = "Q";
+			} else if (this.value == 13) {
+				value = "K";
+			} else {
+				value = String.valueOf(this.value);
+			}
+			
+			output = value + this.suit;
 		} else {
-			value = String.valueOf(this.value);
+			output = "??";
 		}
-		
-		output = value + this.suit;
 		
 		return output;
 	}
@@ -47,6 +51,17 @@ public class Card {
 	 */
 	public Card clone() {
 		return new Card(this.value, this.suit, this.faceUp);
+	}
+	
+	/**
+	 * equals functions
+	 */
+	public boolean equals(Card card) {
+		if (this.value == card.value && this.suit == card.suit && this.faceUp == card.faceUp) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

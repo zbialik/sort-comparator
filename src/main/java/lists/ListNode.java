@@ -6,4 +6,12 @@ public class ListNode {
 	public ListNode next;
 	public ListNode prev;
 	
+	public String toString() {
+		String output = "";
+		
+		output += data.toString();
+		
+		return output;
+	}
+	
 }
