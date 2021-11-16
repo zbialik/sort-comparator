@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 
 public class Play {
 
-	private static int LAYERS = 1;
+	private static int LAYERS = 5;
 
 	private static Logger LOGGER = LogManager.getLogger(Play.class);
 
