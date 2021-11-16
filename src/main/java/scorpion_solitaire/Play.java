@@ -222,7 +222,7 @@ public class Play {
 		CardDeck currDeck = currD.clone();
 		CardDeck newDeck = newD.clone();
 		
-		LOGGER.debug("scoreMove() recurse layer: " + recurseLayer + " (input score: "+ score +")");
+		LOGGER.trace("scoreMove() recurse layer: " + recurseLayer + " (input score: "+ score +")");
 		LOGGER.trace("currDeck:\n" + currDeck.toString());
 		LOGGER.trace("newDeck:\n" + newDeck.toString());
 
@@ -255,7 +255,7 @@ public class Play {
 				score += submoveScoreBest; // add best submove score
 			}
 		}
-		LOGGER.debug("scoreMove() recurse layer: " + recurseLayer + " (output score: "+ score +")");
+		LOGGER.trace("scoreMove() recurse layer: " + recurseLayer + " (output score: "+ score +")");
 		return score;
 	}
 	
