@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 
 public class Play {
 
-	private static final int LAYERS = 6;
+	private static int LAYERS = 1;
 
 	private static Logger LOGGER = LogManager.getLogger(Play.class);
 
@@ -24,12 +24,13 @@ public class Play {
 	public static void main(String[] args) throws Exception {
 
 		// validate args
-		if (args.length != 1) {
-			String msg = "you must provide exactly 1 input args: inputFile.";
+		if (args.length != 2) {
+			String msg = "you must provide exactly 2 input args: inputFile and recursionLayerThreshold (integer).";
 			throw new Exception(msg);
 		}
 
 		String inputFile = args[0];
+		LAYERS = Integer.valueOf(args[1]);
 
 		LOGGER.info("reading user inputs");
 		LOGGER.debug("input file: " + inputFile);
