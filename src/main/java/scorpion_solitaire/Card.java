@@ -25,7 +25,7 @@ public class Card {
 		String output = "";
 		String value;
 		
-		if (this.faceUp) {
+		if (this.faceUp) { 
 			if (this.value == 1) {
 				value = "A";
 			} else if (this.value == 11) {

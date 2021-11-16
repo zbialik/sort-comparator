@@ -40,10 +40,13 @@ public class Play {
 
 			deck = new CardDeck(cards);
 			deck.shuffle(); // shuffle provided card sequence
-
+			
 			deck.dealCards(); // deals to deck.tableau and deck.reserve
-
+			
+			CardDeck.printBoardLayout(deck); // print out game layout
+			
 			autoplay();
+			
 
 		} catch (FileNotFoundException e) {
 			LOGGER.error("file not found:" + inputFile);
@@ -76,23 +79,23 @@ public class Play {
 	private static void autoplay() throws Exception {
 		boolean gameWon = false;
 		boolean gameLost = false;
+		int turns = 0;
 
 		CardDeck nextDeck; // Array of ListLinked objects holding Card objects
 
 		while (!gameWon && !gameLost) {
-
-			// print out game layout
-			CardDeck.printBoardLayout(deck.tableau, deck.reserve);
+			turns++;
 
 			// get best move
 			nextDeck = selectMove(deck.clone());
 
-			if (nextDeck == null) {
+			// need to make sure we verify we didn't win game in previous loop
+			if (nextDeck == null && !gameWon) { 
 				if (deck.reserve.isEmpty()) {
-					LOGGER.info("no possible moves left AND reserve is empty - the game has been lost.");
+					LOGGER.debug("no possible moves left AND reserve is empty - the game has been lost.");
 					gameLost = true;
 				} else {
-					LOGGER.info("no possible moves left AND reserve is full - distributing reserve now.");
+					LOGGER.debug("no possible moves left AND reserve is full - distributing reserve now.");
 					deck = CardDeck.distributeReserve(deck);
 				}
 			} else {
@@ -101,6 +104,9 @@ public class Play {
 
 			// check win status
 			gameWon = CardDeck.checkWin(deck);
+
+			// print out game layout
+			CardDeck.printBoardLayout(deck);
 
 		}
 
@@ -215,8 +221,7 @@ public class Play {
 		CardDeck currDeck = currD.clone();
 		CardDeck newDeck = newD.clone();
 		
-		LOGGER.debug("starting scoreMove() recurse layer: " + recurseLayer + " (score: "+ score +")");
-		
+		LOGGER.trace("starting scoreMove() recurse layer: " + recurseLayer + " (score: "+ score +")");
 		LOGGER.trace("currDeck:\n" + currDeck.toString());
 		LOGGER.trace("newDeck:\n" + newDeck.toString());
 
@@ -224,7 +229,7 @@ public class Play {
 			
 			// if move can lead to win, set score to very large number and return
 			if (CardDeck.checkWin(newDeck)) {
-				score += 1000000000000000000d * (LAYERS - recurseLayer); // make score extremely large due to winning tableau and return;
+				score = Double.POSITIVE_INFINITY; // make score extremely large due to winning tableau and return;
 			} else {
 				
 				// otherwise,score the individual move and then recursively score possible moves after this one
@@ -264,28 +269,26 @@ public class Play {
 		double score = 0.00001d; // set to 1 to intially prefer moves that have more moves available (from recursive call) 
 		double scoreInc = 0.0001d; 
 		
-		/*
-		 * TODO: Criteria:
-		 * 
-		 * BAD:
-		 * - newTableau has one more Ace on tail of a pile
-		 * 
-		 * GOOD:
-		 * - currTableau has one more faceUp card
-		 * 
-		 */
+		int currCount;
+		int newCount;
 
-		// CASE A - GOOD: x4 scoreInc when faceUp cards increases
-		int currCount = CardDeck.countFaceUpCards(currDeck);
-		int newCount = CardDeck.countFaceUpCards(newDeck);
+		// CASE A - GOOD: ADD x4 scoreInc when faceUp cards increases
+		currCount = CardDeck.countFaceUpCards(currDeck);
+		newCount = CardDeck.countFaceUpCards(newDeck);
 		if (currCount != newCount) {
 			score += 4 * scoreInc; // add 4 times the scoreInc
 		}
 		
-//		// CASE A - GOOD: x2 scoreInc when faceUp cards increases
-//		if (currCount != newCount) {
-//			score += 2 * scoreInc; // add 2 times the scoreInc
-//		}
+		// CASE B - BAD: MINUS x2 scoreInc when Ace is revealed as tail
+		currCount = CardDeck.countAceTails(currDeck);
+		newCount = CardDeck.countAceTails(newDeck);
+		if (currCount != newCount) {
+			score -= 2 * scoreInc; // minus 2 times the scoreInc
+		}
+		
+		// TODO: CASE C - BAD: MINUX x4 scoreInc when the target pile has the card
+		// needed to append the appending sublist's tail
+		
 		
 		return score;
 	}
@@ -303,8 +306,8 @@ public class Play {
 		CardDeck possibleMove;
 
 		// for each column tail, score each possible move to iteratively determine bestMove
-		double bestScore = -10000d; // start with a very low score
-		double currScore = -10000d; // start with a very low score
+		double bestScore = -100; // start with a very low score
+		double currScore = Double.NEGATIVE_INFINITY; // start with a very low score
 		
 		ListLinked possibleMoves = CardDeck.getPossibleMoves(currDeck);
 		
@@ -315,7 +318,8 @@ public class Play {
 			
 			currScore = scoreMove(0, 0d, currDeck, possibleMove); // recursively finds best move
 
-			if (bestScore < currScore) { // if better score, set bestMove to resulting tableau
+			// check if null to ensure the move still gets chosen even if its really bad
+			if (bestMove == null || bestScore < currScore) { // if better score, set bestMove to resulting tableau
 				bestMove = possibleMove;
 			}
 			possibleMoveNode = possibleMoveNode.next;

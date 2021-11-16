@@ -207,7 +207,7 @@ public class ListLinked implements List {
 	}
 	
 	public String toString() {
-		String output = "";
+		String output = "[";
 		
 		ListNode curr = this.head;
 		while (curr != null) {
@@ -215,6 +215,8 @@ public class ListLinked implements List {
 			output += " " + curr.data.toString();
 			curr = curr.next;
 		}
+		
+		output += " ]";
 		
 		return output;
 	}

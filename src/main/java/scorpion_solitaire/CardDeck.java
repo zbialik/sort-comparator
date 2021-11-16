@@ -126,6 +126,36 @@ public class CardDeck {
 		return faceUpCount;
 		
 	}
+	
+	/**
+	 * Returns the number of tableau piles containing Ace at bottom
+	 * 
+	 * @return
+	 * @throws Exception 
+	 */
+	public static int countAceTails(CardDeck currDeck) throws Exception {
+		
+		// count aces for each tail of 
+		int aceCount = 0;
+		
+		ListNode tail;
+		Card tailCard;
+		for (int i=0; i < currDeck.tableau.length; i++) {
+			
+			tail = currDeck.tableau[i].tail;
+			
+			if (tail != null) {
+				tailCard = (Card) tail.data;
+				
+				if (tailCard.value == 1) {
+					aceCount++;
+				}
+			}
+		}
+		
+		return aceCount;
+		
+	}
 
 	/**
 	 * Returns true if the provided pile meets needed conditions to
@@ -288,7 +318,7 @@ public class CardDeck {
 						if (isValidMove(curr, tailPile)) { // if a possible move, score it
 							move.tableau = getResultingTableau(getTableauClone(deck.tableau), j, currIndex, i); 
 							possibleMoves.append(move.clone());
-							LOGGER.debug("possible move: " + Arrays.toString(move.tableau));
+							LOGGER.trace("possible move: " + Arrays.toString(move.tableau));
 						}
 
 						curr = curr.next; // goto next card
@@ -299,6 +329,46 @@ public class CardDeck {
 		}
 		
 		return possibleMoves;
+	}
+	
+	
+	/**
+	 * 
+	 * TODO: COMPLETE LATER...
+	 * 
+	 * Helper method for returning array of lists that hold the following data:
+	 * 	[0]: original column/pile losing the sublist card(s)
+	 * 	[1]: original column/pile receiving the sublist of cards(s)
+	 * 	[2]: a sublist of the pile being moved
+	 * 
+	 * @param clone
+	 * @return
+	 * @throws Exception
+	 */
+	public static TableauColumnListLinked[] getChangedPiles(CardDeck currDeck, CardDeck newDeck) throws Exception {
+		
+		TableauColumnListLinked[] output = new TableauColumnListLinked[3];
+		
+		TableauColumnListLinked[] currTableau = getTableauClone(currDeck.tableau);
+		TableauColumnListLinked[] newTableau = getTableauClone(newDeck.tableau);
+		boolean foundPileShipper = false;
+		boolean foundPileReceiver = false;
+		int i = 0;
+		while (i < currTableau.length && !foundPileShipper && !foundPileReceiver) {
+			
+			if (currTableau[i].size < newTableau[i].size) {
+				foundPileReceiver = true;
+				output[0] = currTableau[i];
+				
+			} else if (currTableau[i].size > newTableau[i].size) {
+				foundPileShipper = true;
+				output[1] = newTableau[i];
+			}
+			
+			i++;
+		}
+		
+		return output;
 	}
 
 	/**
@@ -402,8 +472,11 @@ public class CardDeck {
 	 * 
 	 * @throws Exception
 	 */
-	public static void printBoardLayout(TableauColumnListLinked[] currTableau, TableauColumnListLinked currReserve) throws Exception {
+	public static void printBoardLayout(CardDeck currDeck) throws Exception {
 
+		TableauColumnListLinked[] currTableau = currDeck.tableau;
+		TableauColumnListLinked currReserve = currDeck.reserve;
+		
 		// find the max # of rows out of all columns in game board
 		int maxRows = 0;
 		for (int i = 0; i < currTableau.length; i++) {
@@ -414,14 +487,13 @@ public class CardDeck {
 		
 		String[] cardsRow = new String[currTableau.length];
 
-		System.out.println();
+		System.out.println("-------------------------------------------------");
+		System.out.println("Reserve: " + currDeck.reserve.toString());
 		for (int i = 0; i < maxRows; i++) {
 			for (int j = 0; j < currTableau.length; j++) { // grab all card strings
 
 				if (currTableau[j].size <= i) { // just print empty string
 					cardsRow[j] = "";
-				} else if (!((Card) currTableau[j].getListNode(i).data).faceUp) {
-					cardsRow[j] = "??";
 				} else {
 					cardsRow[j] = currTableau[j].getListNode(i).data.toString();
 				}
@@ -430,12 +502,6 @@ public class CardDeck {
 			// print cards
 			for (int j = 0; j < cardsRow.length; j++) {
 				System.out.printf("%8s", cardsRow[j]);
-			}
-
-			if (i == 0) { // if first row, also print reserve cards (faceDown)
-				for (int j = 0; j < currReserve.size; j++) {
-					System.out.printf("%8s", currReserve.getListNode(j).data.toString());
-				}
 			}
 
 			System.out.println();
