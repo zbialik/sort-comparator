@@ -118,6 +118,7 @@ public class Play {
 		} else {
 			System.out.println("Computer LOST in Scorpion Solitaire ("+turns+" turns).");
 		}
+		System.out.println("recursion layers utilized: " + LAYERS);
 
 	}
 
@@ -255,7 +256,7 @@ public class Play {
 				score += submoveScoreBest; // add best submove score
 			}
 		}
-		LOGGER.trace("scoreMove() recurse layer: " + recurseLayer + " (output score: "+ score +")");
+		LOGGER.debug("scoreMove() recurse layer: " + recurseLayer + " (output score: "+ score +")");
 		return score;
 	}
 	
