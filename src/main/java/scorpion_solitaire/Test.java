@@ -11,9 +11,9 @@ import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 
-public class Play {
+public class Test {
 
-	private static final int LAYERS = 6;
+	private static final int LAYERS = 5;
 
 	private static Logger LOGGER = LogManager.getLogger(Play.class);
 
@@ -82,6 +82,21 @@ public class Play {
 		int turns = 0;
 
 		CardDeck nextDeck; // Array of ListLinked objects holding Card objects
+		
+		// UPDATE TABLEAU TO BE WIN
+		deck.reserve.clear();
+		for (int i = 0; i < deck.tableau.length; i++) { // clear tableau
+			deck.tableau[i].clear();
+		}
+
+		char[] suits = {'C', 'H', 'D', 'S'};
+		int i = 0;
+		for (char suit : suits) { // create winning tableau
+			i++;
+			for (int val = 13; val >= 1; val--) {
+				deck.tableau[i].append(new Card(val, suit, true));	
+			}
+		}
 
 		while (!gameWon && !gameLost) {
 			turns++;

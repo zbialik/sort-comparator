@@ -7,6 +7,7 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lists.ListLinked;
 import lists.ListNode;
 
 public class CardDeck {
@@ -191,7 +192,7 @@ public class CardDeck {
 					winPile = false;
 				}
 
-				if (currCard.value == nextCard.value + 1) { // 1. verify nextCard has value incremented by 1
+				if (currCard.value == nextCard.value - 1) { // 1. verify nextCard has value minus 1
 					winPile = false;
 				}
 			}
@@ -334,11 +335,9 @@ public class CardDeck {
 	
 	/**
 	 * 
-	 * TODO: COMPLETE LATER...
-	 * 
 	 * Helper method for returning array of lists that hold the following data:
-	 * 	[0]: original column/pile losing the sublist card(s)
-	 * 	[1]: original column/pile receiving the sublist of cards(s)
+	 * 	[0]: original column/pile receiving the sublist of cards(s)
+	 * 	[1]: original column/pile sending the sublist of cards(s)
 	 * 	[2]: a sublist of the pile being moved
 	 * 
 	 * @param clone
@@ -351,24 +350,54 @@ public class CardDeck {
 		
 		TableauColumnListLinked[] currTableau = getTableauClone(currDeck.tableau);
 		TableauColumnListLinked[] newTableau = getTableauClone(newDeck.tableau);
-		boolean foundPileShipper = false;
 		boolean foundPileReceiver = false;
+		boolean foundPileShipper = false;
 		int i = 0;
-		while (i < currTableau.length && !foundPileShipper && !foundPileReceiver) {
+		while (!foundPileShipper || !foundPileReceiver) {
 			
-			if (currTableau[i].size < newTableau[i].size) {
+			if (currTableau[i].size < newTableau[i].size) { // found receiver
 				foundPileReceiver = true;
 				output[0] = currTableau[i];
-				
-			} else if (currTableau[i].size > newTableau[i].size) {
+			} else if (currTableau[i].size > newTableau[i].size) { // found shipper
 				foundPileShipper = true;
-				output[1] = newTableau[i];
+				output[1] = currTableau[i];
+				int diff = currTableau[i].size - newTableau[i].size;
+				TableauColumnListLinked sublist = currTableau[i].clone();
+				while (sublist.size != diff) {
+					sublist.remove(0); // keep removing head until sublist is same size as diff
+				}
+				output[2] = sublist;
 			}
 			
 			i++;
 		}
 		
 		return output;
+	}
+	
+	/**
+	 * Returns a list of all face up cards
+	 * 
+	 * @return
+	 * @throws Exception 
+	 */
+	public ListLinked getFaceUpTableauCards() throws Exception {
+		ListLinked list = new ListLinked();
+		ListNode curr;
+		
+		for (int i = 0; i < this.tableau.length; i++) {
+			curr = this.tableau[i].head;
+			
+			while (curr != null) {
+				if (((Card) curr.data).faceUp) {
+					list.append((Card) curr.data);
+				}
+				
+				curr = curr.next;
+			}
+		}
+		
+		return list;
 	}
 
 	/**
@@ -444,7 +473,7 @@ public class CardDeck {
 	 * @param tailNode
 	 * @return validMove
 	 */
-	private static boolean isValidMove(ListNode cardNode, ListNode tailNode) {
+	static boolean isValidMove(ListNode cardNode, ListNode tailNode) {
 		boolean validMove = false;
 
 		Card cardToMove = (Card) cardNode.data;
@@ -475,7 +504,6 @@ public class CardDeck {
 	public static void printBoardLayout(CardDeck currDeck) throws Exception {
 
 		TableauColumnListLinked[] currTableau = currDeck.tableau;
-		TableauColumnListLinked currReserve = currDeck.reserve;
 		
 		// find the max # of rows out of all columns in game board
 		int maxRows = 0;
@@ -487,8 +515,9 @@ public class CardDeck {
 		
 		String[] cardsRow = new String[currTableau.length];
 
-		System.out.println("-------------------------------------------------");
-		System.out.println("Reserve: " + currDeck.reserve.toString());
+		System.out.println("--------------------------------------------------------");
+		System.out.println("Reserve: " + currDeck.reserve.toString() + "\n");
+		System.out.println("Tableau:\n");
 		for (int i = 0; i < maxRows; i++) {
 			for (int j = 0; j < currTableau.length; j++) { // grab all card strings
 
