@@ -33,7 +33,7 @@ public class Play {
 
 		LOGGER.info("reading user inputs");
 		LOGGER.debug("input file: " + inputFile);
-
+		
 		try {
 			inputReader = new FileReader(inputFile); // input file
 			TableauColumnListLinked cards = readCards(inputReader); // reads cards based on input file
@@ -314,19 +314,19 @@ public class Play {
 				newTailAppendable = true;
 			}
 		}
-		if (!newTailAppendable) {
+		if (!newTailAppendable && ((Card) curr.data).value != 1) { // exclude Ace since accounted for
 			score -= 100 * scoreInc; // minus 100 times the scoreInc
 		}
 		
 		
-		// CASE D - BAD: MINUX 10 scoreInc when the target pile has the card
+		// CASE D - BAD: MINUX 1000 scoreInc when the target pile has the card
 		// needed to append the appending sublist's tail
 		curr = origReceivingList.head;
 		appending = appendingList.head;
 		while (curr != null) {
 			while (appending != null) {
 				if (CardDeck.isValidMove(appending, curr)) {
-					score -= 10 * scoreInc; // minus 10 times the scoreInc
+					score -= 1000 * scoreInc; // minus 1000 times the scoreInc
 				}
 				appending = appending.next;
 			}
