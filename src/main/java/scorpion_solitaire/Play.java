@@ -106,7 +106,9 @@ public class Play {
 			gameWon = CardDeck.checkWin(deck);
 
 			// print out game layout
-			CardDeck.printBoardLayout(deck);
+			if (!gameLost) {
+				CardDeck.printBoardLayout(deck);
+			}
 
 		}
 
@@ -242,7 +244,6 @@ public class Play {
 				double submoveScore = 0d; // used to calculate avg of scores possible for submoves
 				double submoveScoreBest = 0d; // used to calculate avg of scores possible for submoves
 				while (possibleMoveNode != null) { // loop over each possible move
-					
 					possibleMove = (CardDeck) possibleMoveNode.data;
 					submoveScore = scoreMove(recurseLayer, score, newDeck, possibleMove); // calculate submoveScore recursively
 					if (submoveScore > submoveScoreBest) {
@@ -314,7 +315,7 @@ public class Play {
 				newTailAppendable = true;
 			}
 		}
-		if (!newTailAppendable && ((Card) curr.data).value != 1) { // exclude Ace since accounted for
+		if (!newTailAppendable && curr != null && ((Card) curr.data).value != 1) { // exclude Ace since accounted for
 			score -= 100 * scoreInc; // minus 100 times the scoreInc
 		}
 		
