@@ -44,6 +44,7 @@ java -cp scorpion-solitaire-0.0.1-SNAPSHOT.jar scorpion_solitaire.PlayScorpion i
 The output will look similar to the following:
 
 ```
+-----
 ```
 
 
