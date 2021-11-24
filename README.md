@@ -38,7 +38,7 @@ I have provided 1 test input file: `inputs.txt`.
 You can run the compiled code like so:
 
 ```
-java -cp scorpion-solitaire-0.0.1-SNAPSHOT.jar scorpion_solitaire.PlayScorpion inputs.txt outputs.txt
+java -cp sort-comparator-0.0.1-SNAPSHOT.jar scorpion_solitaire.Sort inputs.txt outputs.txt
 ```
 
 The output will look similar to the following:
