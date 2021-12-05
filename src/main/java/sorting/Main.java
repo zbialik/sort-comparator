@@ -1,13 +1,16 @@
 package sorting;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lists.ListLinked;
 import stacks.StackLinked;
 
 public class Main {
@@ -55,8 +58,8 @@ public class Main {
 		int[] sortCases = {1, 2, 3, 4, 5}; // iterate for each sorting case defined in lab assignment
 		
 		// TEST
-//		inputFiles.clear();
-//		inputFiles.push("src/test/resources/inputs/order-categories/reverse/rev10K.dat");
+		inputFiles.clear();
+		inputFiles.push("src/test/resources/inputs/order-categories/reverse/rev10K.dat");
 		
 		
 		// function variables
@@ -67,41 +70,121 @@ public class Main {
 			file = (String) inputFiles.pop();
 			data = readFile(file); // grab data
 			for (int sortCase : sortCases ) {
-				processFile(file, data, data.length, sortCase);
+				processData(file, data, data.length, sortCase);
 			}
 		}
 	}
 	
-	private static void processFile(String file, int[] data, int n, int sortCase) throws Exception {
+	/**
+	 * Method sorts the provided data using an algorithm identified with sortCase
+	 * 
+	 * The method will print the number of comparisons and exchanges that occur for each thread, 
+	 * as well as provide this data in an output file.
+	 * 
+	 * For data size 50 or less, the method will print the unsorted data and the sorted data
+	 * out to the console. For data larger than this, the method will truncate the output.
+	 * 
+	 * @param file
+	 * @param data
+	 * @param n
+	 * @param sortCase
+	 * @throws Exception
+	 */
+	private static void processData(String file, int[] data, int n, int sortCase) throws Exception {
+		
+		Sort sort;
+		int maxDataLength = 50;
 		
 		System.out.println();
-		LOGGER.info("--------------------------------------");
-		LOGGER.info("FILENAME: {}", file);
-
-		Sort sort;
-		int maxDataLength = 500;
+		ListLinked output = new ListLinked();
+		output.append("--------------------------------------");
+		output.append(String.format("FILENAME: %s",file));
+		output.append(String.format("SORT METHOD: %s", getSortMethodName(sortCase)));
 		
-		LOGGER.debug("n={}, n^2={}, n*log2(n)={}",n, (n*n), (n*(int) (Math.log(n) / Math.log(2))));
-		LOGGER.info("\tSORT CASE: {}", sortCase);
+//		TODO: DELETE after testing completed
+//		output.append(String.format("n=%d, n^2=%d, n*log2(n)=%d",n, (n*n), (n*(int) (Math.log(n) / Math.log(2)))));
+		
 		if (n <= maxDataLength) {
-			LOGGER.debug("\tunsorted data: " + Arrays.toString(data));
 			
+			output.append("\tunsorted data: " + Arrays.toString(data));
 			sort = executeSort(sortCase, data, n);
+			output.append("\tsorted data: " + Arrays.toString(sort.data));
 			
-			LOGGER.debug("\tsorted data: " + Arrays.toString(sort.data));
 		} else {
-			LOGGER.trace("\tdata too large to print (length >= "+maxDataLength+") - truncating output.");
-			LOGGER.debug("\tunsorted data: " + Arrays.toString(data).substring(0, Math.min(n, 100)) + " ...");
+			output.append("\tunsorted data: " + Arrays.toString(data).substring(0, Math.min(n, 100)) + " ...");
 			
 			sort = executeSort(sortCase, data, n);
-			
-			LOGGER.debug("\tsorted data: " + Arrays.toString(sort.data).substring(0, Math.min(n, 100)) + " ...");
+
+			output.append("\tsorted data: " + Arrays.toString(sort.data).substring(0, Math.min(n, 100)) + " ...");
 		}
 		
 		// print number of comparisons and exchanges
-		LOGGER.info("\tnumber of comparisons: " + sort.comparisons);
-		LOGGER.info("\tnumber of exchanges: " + sort.exchanges);
+		output.append("\tnumber of comparisons: " + sort.comparisons);
+		output.append("\tnumber of exchanges: " + sort.exchanges);
+		output(file, output); // print and write output
+	}
+	
+	/**
+	 * Returns string representing description of sorting algorithm
+	 * @param sortCase
+	 * @return
+	 * @throws Exception
+	 */
+	private static String getSortMethodName(int sortCase) throws Exception {
+		if (sortCase == 1) {
 			
+			return "QuickSort - Select the first item of the partition as the pivot. "
+					+ "Treat partitions of size one and two as stopping cases.";
+			
+		} else if (sortCase == 2) {
+			
+			return "QuickSort - Select the first item of the partition as the pivot. "
+					+ "For a partition of size 100 or less, use an insertion sort to finish.";
+			
+		} else if (sortCase == 3) {
+
+			return "QuickSort - Select the first item of the partition as the pivot. "
+					+ "For a partition of size 50 or less, use an insertion sort to finish.";
+			
+		} else if (sortCase == 4) {
+			
+			return "QuickSort - Select the first item of the partition as the pivot. "
+					+ "Treat partitions of size one and two as stopping cases.";
+			
+		} else if (sortCase == 5) {
+			
+			return "Select the median-of-three as the pivot. "
+					+ "Treat partitions of size one and two as stopping cases";
+			
+		} else {
+			String error = "unknown sort case: " + Integer.toString(sortCase);
+			LOGGER.error(error);
+			throw new Exception(error);
+		}
+	}
+
+	/**
+	 * Method writes 
+	 * @param outputFile
+	 * @param data
+	 * @throws Exception 
+	 */
+	private static void output(String outputFile, ListLinked content) throws Exception {
+
+		BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outputFile)); // output file
+		
+		String line;
+		while (!content.isEmpty()) {
+			line = (String) content.remove(0);
+			LOGGER.info(line);
+			outputWriter.write(line);
+		}
+
+		outputWriter.write("");
+		
+		
+		
+		outputWriter.close();
 	}
 
 	/**

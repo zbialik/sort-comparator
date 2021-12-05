@@ -7,6 +7,7 @@ public class HeapSort extends Sort {
 	}
 
 	/**
+	 * TODO: MUST MAKE RECURSIVE
 	 * Method heapifies data and then sorts it by percolating down max heap
 	 * @param numbers
 	 * @param numbersSize
