@@ -1,0 +1,14 @@
+-----------------------------------------------------
+File Input: src/test/resources/inputs/order-categories/ascending/asc10K.dat
+Sort Name: heapsort
+Description: HeapSort - Heapify array then percolate down heap sort
+
+Data Size (N): 10000
+N^2: 100000000
+(N+1)*(N/2): 50005000
+N*log2(N): 130000
+
+Original Data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,  ...
+Sorted Data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,  ...
+# of Comparisons: 366748
+# of Exchanges: 131956

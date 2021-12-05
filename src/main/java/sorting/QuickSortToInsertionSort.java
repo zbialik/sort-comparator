@@ -14,8 +14,9 @@ public class QuickSortToInsertionSort extends QuickSort {
 	 * finishes the rest with insertion sort
 	 * @param lowIndex
 	 * @param highIndex
+	 * @throws Exception 
 	 */
-	public void quickSort(int lowIndex, int highIndex) {
+	public void quickSort(int lowIndex, int highIndex) throws Exception {
 		// Base case: If the partition size is 1 or zero elements, then the partition is already sorted
 		if (lowIndex >= highIndex) {
 			return;

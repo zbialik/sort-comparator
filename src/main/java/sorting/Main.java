@@ -22,19 +22,23 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		// validate args
-		if (args.length != 1) {
-			String msg = "you must provide exactly 1 input args: inputsDir.";
+		if (args.length != 2) {
+			String msg = "you must provide exactly 2 input args: inputsDir and outputsDir.";
 			throw new Exception(msg);
 		}
 		
 		String inputsDir = args[0].replaceAll("/+$", ""); // remove trailing '/' too
+		String outputsDir = args[1].replaceAll("/+$", ""); // remove trailing '/' too
 		
 		LOGGER.info("reading user inputs");
 		LOGGER.debug("folder containing input files: " + inputsDir);
+		LOGGER.debug("folder to write output files: " + outputsDir);
 		
 		try {
 			
-			processInputs(inputsDir);
+			validateInputs(inputsDir, outputsDir);
+			
+			processInputs(inputsDir, outputsDir);
 
 		} finally {
 			try {
@@ -47,19 +51,28 @@ public class Main {
 		}
 	}
 	
+	private static void validateInputs(String inputsDir, String outputsDir) throws Exception {
+		File inputsDirFile = new File(inputsDir.toString());
+	    File outputsDirFile = new File(outputsDir.toString());
+	    
+	    if (inputsDirFile.isDirectory() && outputsDirFile.isDirectory()) {
+	    	return;
+	    } else {
+	    	String error = "one of the inputs directories are not a real folder";
+	    	throw new Exception(error);
+	    			
+	    }
+	}
+
 	/**
 	 * Method for returning results of multiple sorting methods on multiple file inputs
 	 * 
 	 * @throws Exception
 	 */
-	private static void processInputs(String inputsDir) throws Exception {
+	private static void processInputs(String inputsDir, String outputsDir) throws Exception {
 		
 		StackLinked inputFiles = filesInFolder(new File(inputsDir));
 		int[] sortCases = {1, 2, 3, 4, 5}; // iterate for each sorting case defined in lab assignment
-		
-		// TEST
-		inputFiles.clear();
-		inputFiles.push("src/test/resources/inputs/order-categories/reverse/rev10K.dat");
 		
 		
 		// function variables
@@ -70,7 +83,7 @@ public class Main {
 			file = (String) inputFiles.pop();
 			data = readFile(file); // grab data
 			for (int sortCase : sortCases ) {
-				processData(file, data, data.length, sortCase);
+				processData(file, outputsDir, data, data.length, sortCase);
 			}
 		}
 	}
@@ -90,38 +103,54 @@ public class Main {
 	 * @param sortCase
 	 * @throws Exception
 	 */
-	private static void processData(String file, int[] data, int n, int sortCase) throws Exception {
+	private static void processData(String file, String outputsDir, int[] data, int n, int sortCase) throws Exception {
 		
 		Sort sort;
 		int maxDataLength = 50;
 		
 		System.out.println();
 		ListLinked output = new ListLinked();
-		output.append("--------------------------------------");
-		output.append(String.format("FILENAME: %s",file));
-		output.append(String.format("SORT METHOD: %s", getSortMethodName(sortCase)));
-		
-//		TODO: DELETE after testing completed
-//		output.append(String.format("n=%d, n^2=%d, n*log2(n)=%d",n, (n*n), (n*(int) (Math.log(n) / Math.log(2)))));
+		output.append("-----------------------------------------------------");
+		output.append(String.format("File Input: %s",file));
+		output.append(String.format("Sort Name: %s", getSortMethodName(sortCase)));
+		output.append(String.format("Description: %s", getSortMethodDescription(sortCase)));
+		output.append("");
+		output.append("Data Size (N): " + n);
+		output.append("N^2: " + n*n);
+		output.append("(N+1)*(N/2): " + ((n+1)*(n/2)));
+		output.append("N*log2(N): " + (n*(int) (Math.log(n) / Math.log(2))));
+		output.append("");
 		
 		if (n <= maxDataLength) {
 			
-			output.append("\tunsorted data: " + Arrays.toString(data));
+			output.append("Original Data: " + Arrays.toString(data));
 			sort = executeSort(sortCase, data, n);
-			output.append("\tsorted data: " + Arrays.toString(sort.data));
+			output.append("Sorted Data: " + Arrays.toString(sort.data));
 			
 		} else {
-			output.append("\tunsorted data: " + Arrays.toString(data).substring(0, Math.min(n, 100)) + " ...");
 			
+			output.append("Original Data: " + Arrays.toString(data).substring(0, Math.min(n, 100)) + " ...");
 			sort = executeSort(sortCase, data, n);
-
-			output.append("\tsorted data: " + Arrays.toString(sort.data).substring(0, Math.min(n, 100)) + " ...");
+			output.append("Sorted Data: " + Arrays.toString(sort.data).substring(0, Math.min(n, 100)) + " ...");
 		}
 		
 		// print number of comparisons and exchanges
-		output.append("\tnumber of comparisons: " + sort.comparisons);
-		output.append("\tnumber of exchanges: " + sort.exchanges);
-		output(file, output); // print and write output
+		output.append("# of Comparisons: " + sort.comparisons);
+		output.append("# of Exchanges: " + sort.exchanges);
+		
+		
+		// determine output file path
+	    int index = file.lastIndexOf('/');
+	    outputsDir += "/" + getSortMethodName(sortCase);
+	    
+	    File outputsDirFile = new File(outputsDir);
+	    if (!outputsDirFile.isDirectory()) { // make housing directory if doesn't exist yet
+	    	outputsDirFile.mkdirs();
+	    			
+	    }
+	    
+	    String outputFile = outputsDir + "/" + file.substring(index + 1,file.length());
+		output(outputFile, output); // print and write output
 	}
 	
 	/**
@@ -131,6 +160,40 @@ public class Main {
 	 * @throws Exception
 	 */
 	private static String getSortMethodName(int sortCase) throws Exception {
+		if (sortCase == 1) {
+			
+			return "quicksort-first-index";
+			
+		} else if (sortCase == 2) {
+
+			return "quicksort-to-insertion-100";
+			
+		} else if (sortCase == 3) {
+
+			return "quicksort-to-insertion-50";
+			
+		} else if (sortCase == 4) {
+
+			return "quicksort-median-of-3";
+			
+		} else if (sortCase == 5) {
+			
+			return "heapsort";
+			
+		} else {
+			String error = "unknown sort case: " + Integer.toString(sortCase);
+			LOGGER.error(error);
+			throw new Exception(error);
+		}
+	}
+	
+	/**
+	 * Returns string representing description of sorting algorithm
+	 * @param sortCase
+	 * @return
+	 * @throws Exception
+	 */
+	private static String getSortMethodDescription(int sortCase) throws Exception {
 		if (sortCase == 1) {
 			
 			return "QuickSort - Select the first item of the partition as the pivot. "
@@ -148,13 +211,12 @@ public class Main {
 			
 		} else if (sortCase == 4) {
 			
-			return "QuickSort - Select the first item of the partition as the pivot. "
-					+ "Treat partitions of size one and two as stopping cases.";
+			return "QuickSort - Select the median-of-three as the pivot. "
+					+ "Treat partitions of size one and two as stopping cases";
 			
 		} else if (sortCase == 5) {
 			
-			return "Select the median-of-three as the pivot. "
-					+ "Treat partitions of size one and two as stopping cases";
+			return "HeapSort - Heapify array then percolate down heap sort";
 			
 		} else {
 			String error = "unknown sort case: " + Integer.toString(sortCase);
@@ -172,17 +234,14 @@ public class Main {
 	private static void output(String outputFile, ListLinked content) throws Exception {
 
 		BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outputFile)); // output file
+		outputWriter.write("");
 		
 		String line;
 		while (!content.isEmpty()) {
 			line = (String) content.remove(0);
 			LOGGER.info(line);
-			outputWriter.write(line);
+			outputWriter.write(line + "\n");
 		}
-
-		outputWriter.write("");
-		
-		
 		
 		outputWriter.close();
 	}
@@ -191,8 +250,9 @@ public class Main {
 	 * Main method for executing sort
 	 * @param sortCase
 	 * @param data
+	 * @throws Exception 
 	 */
-	private static Sort executeSort(int sortCase, int[] data, int dataLength) {
+	private static Sort executeSort(int sortCase, int[] data, int dataLength) throws Exception {
 		
 		Sort sort;
 		

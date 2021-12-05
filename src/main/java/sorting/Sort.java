@@ -24,6 +24,7 @@ public class Sort {
 	 * @param i2
 	 */
 	public void swap(int i1, int i2) {
+		this.exchanges++;
 		int temp = this.data[i1];
 		this.data[i1] = this.data[i2];
 		this.data[i2] = temp;

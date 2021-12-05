@@ -1,0 +1,14 @@
+-----------------------------------------------------
+File Input: src/test/resources/inputs/order-categories/ascending/asc1K.dat
+Sort Name: quicksort-to-insertion-100
+Description: QuickSort - Select the first item of the partition as the pivot. For a partition of size 100 or less, use an insertion sort to finish.
+
+Data Size (N): 1000
+N^2: 1000000
+(N+1)*(N/2): 500500
+N*log2(N): 9000
+
+Original Data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,  ...
+Sorted Data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,  ...
+# of Comparisons: 494649
+# of Exchanges: 0

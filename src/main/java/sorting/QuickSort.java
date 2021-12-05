@@ -11,8 +11,9 @@ public class QuickSort extends Sort {
 	 * @param lowIndex
 	 * @param highIndex
 	 * @return pivot
+	 * @throws Exception 
 	 */
-	public int pivot(int lowIndex, int highIndex) {
+	public int pivot(int lowIndex, int highIndex) throws Exception {
 		return this.data[lowIndex];
 	}
 	
@@ -20,8 +21,9 @@ public class QuickSort extends Sort {
 	 * Method that executes the quicksort recursive algorithm
 	 * @param lowIndex
 	 * @param highIndex
+	 * @throws Exception 
 	 */
-	public void quickSort(int lowIndex, int highIndex) {
+	public void quickSort(int lowIndex, int highIndex) throws Exception {
 		// Base case: If the partition size is 1 or zero elements, then the partition is already sorted
 		if (lowIndex >= highIndex) {
 			return;
@@ -43,8 +45,9 @@ public class QuickSort extends Sort {
 	 * @param lowIndex
 	 * @param highIndex
 	 * @return nextPartitionIndex
+	 * @throws Exception 
 	 */
-	public int partition(int lowIndex, int highIndex) {
+	public int partition(int lowIndex, int highIndex) throws Exception {
 
 		int pivot = this.pivot(lowIndex, highIndex); // grab pivot
 		
@@ -66,7 +69,6 @@ public class QuickSort extends Sort {
 			if (lowIndex >= highIndex) {
 				done = true;
 			} else {
-				this.exchanges++; // count exchanges for analysis
 				
 				// swap this.data[lowIndex] and this.data[highIndex]
 				this.swap(lowIndex, highIndex);

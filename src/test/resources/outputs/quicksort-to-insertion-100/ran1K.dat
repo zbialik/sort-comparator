@@ -1,0 +1,14 @@
+-----------------------------------------------------
+File Input: src/test/resources/inputs/order-categories/random/ran1K.dat
+Sort Name: quicksort-to-insertion-100
+Description: QuickSort - Select the first item of the partition as the pivot. For a partition of size 100 or less, use an insertion sort to finish.
+
+Data Size (N): 1000
+N^2: 1000000
+(N+1)*(N/2): 500500
+N*log2(N): 9000
+
+Original Data: [518, 5672, 4106, 28, 5581, 9691, 8901, 8366, 7639, 9680, 7581, 8720, 8055, 8493, 3603, 1117, 1782,  ...
+Sorted Data: [3, 9, 11, 13, 28, 38, 46, 77, 94, 96, 99, 107, 116, 123, 126, 128, 137, 176, 185, 189, 194, 215, 21 ...
+# of Comparisons: 20163
+# of Exchanges: 32417

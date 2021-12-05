@@ -1,0 +1,14 @@
+-----------------------------------------------------
+File Input: src/test/resources/inputs/order-categories/duplicate/dup1K.dat
+Sort Name: quicksort-median-of-3
+Description: QuickSort - Select the median-of-three as the pivot. Treat partitions of size one and two as stopping cases
+
+Data Size (N): 1000
+N^2: 1000000
+(N+1)*(N/2): 500500
+N*log2(N): 9000
+
+Original Data: [324, 331, 616, 592, 12, 515, 291, 129, 560, 975, 997, 73, 929, 138, 421, 668, 904, 643, 819, 630, 1 ...
+Sorted Data: [1, 2, 3, 4, 5, 6, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 21, 22, 24, 25, 26, 27,  ...
+# of Comparisons: 6868
+# of Exchanges: 4576
