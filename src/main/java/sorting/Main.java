@@ -137,7 +137,6 @@ public class Main {
 		output.append("# of Comparisons: " + sort.comparisons);
 		output.append("# of Exchanges: " + sort.exchanges);
 		
-		
 		// determine output file path
 	    int index = file.lastIndexOf('/');
 	    outputsDir += "/" + getSortMethodName(sortCase);
