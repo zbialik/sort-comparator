@@ -1,6 +1,6 @@
 package sorting;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,28 +19,20 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		// validate args
-		if (args.length != 2) {
-			String msg = "you must provide exactly 2 input args: sortCase (1, 2, 3, 4, or 5) and inputFile.";
+		if (args.length != 1) {
+			String msg = "you must provide exactly 1 input args: inputsDir.";
 			throw new Exception(msg);
 		}
-
-		int sortCase = Integer.valueOf(args[0]);
-		String inputFile = args[1];
+		
+		String inputsDir = args[0].replaceAll("/+$", ""); // remove trailing '/' too
 		
 		LOGGER.info("reading user inputs");
-		LOGGER.debug("sortCase: " + sortCase);
-		LOGGER.debug("input file: " + inputFile);
+		LOGGER.debug("folder containing input files: " + inputsDir);
 		
 		try {
 			
-			int[] data = readFile(inputFile); // grab data
-			
-			testAllResults(); // TODO: DELETE
-//			printResults(sortCase, data); // TODO: UNCOMMENT
+			processInputs(inputsDir);
 
-		} catch (FileNotFoundException e) {
-			LOGGER.error("file not found:" + inputFile);
-			e.printStackTrace();
 		} finally {
 			try {
 				if (inputReader != null) {
@@ -50,98 +42,66 @@ public class Main {
 				LOGGER.error("error closing stream.");
 			}
 		}
-
 	}
 	
 	/**
-	 * test method for returning results of multiple sorting methods on multiple
-	 * file inputs
+	 * Method for returning results of multiple sorting methods on multiple file inputs
+	 * 
 	 * @throws Exception
 	 */
-	private static void testAllResults() throws Exception {
+	private static void processInputs(String inputsDir) throws Exception {
 		
-		// TEST INPUTS
-		String[] files = {
-				"src/test/resources/asc1K.dat", 
-				"src/test/resources/rev1K.dat", 
-				"src/test/resources/ran1K.dat"
-		};
-		int[] sortCases = {1, 4};
+		StackLinked inputFiles = filesInFolder(new File(inputsDir));
+		int[] sortCases = {1, 2, 3, 4, 5}; // iterate for each sorting case defined in lab assignment
+		
+		// TEST
+//		inputFiles.clear();
+//		inputFiles.push("src/test/resources/inputs/order-categories/reverse/rev10K.dat");
+		
 		
 		// function variables
-		Sort sort;
+		String file;
 		int[] data;
-		int n;
 		
-		int maxDataLength = 500;
-		
-		for (String file : files) {
+		while (!inputFiles.isEmpty()) {
+			file = (String) inputFiles.pop();
 			data = readFile(file); // grab data
-			n = data.length;
-			System.out.println();
-			LOGGER.info("--------------------------------------");
-			LOGGER.info("FILENAME: {}", file);
-			LOGGER.info("n={}, n^2={}, n*log2(n)={}",n, (n*n), (n*(int) (Math.log(n) / Math.log(2))));
 			for (int sortCase : sortCases ) {
-				LOGGER.info("\tSORT CASE: {}",sortCase);
-				if (data.length >= maxDataLength) {
-					LOGGER.trace("\tdata too large to print (length >= "+maxDataLength+") - truncating output.");
-					LOGGER.trace("\tunsorted data: " + Arrays.toString(data).substring(0, Math.min(data.length, 100)) + " ...");
-					
-					sort = executeSort(sortCase, data.clone());
-					
-					LOGGER.trace("\tsorted data: " + Arrays.toString(sort.data).substring(0, Math.min(data.length, 100)) + " ...");
-				} else {
-					LOGGER.trace("\tunsorted data: " + Arrays.toString(data));
-					
-					sort = executeSort(sortCase, data.clone());
-					
-					LOGGER.trace("\tsorted data: " + Arrays.toString(sort.data));
-				}
-				
-				// print number of comparisons and exchanges
-				LOGGER.info("\tnumber of comparisons: " + sort.comparisons);
-				LOGGER.info("\tnumber of exchanges: " + sort.exchanges);
-				
-				// clear data
-				sort.comparisons = 0;
-				sort.exchanges = 0;
+				processFile(file, data, data.length, sortCase);
 			}
 		}
-		
 	}
 	
-	/**
-	 * prints the results desired for the lab
-	 * 
-	 * @param data
-	 */
-	private static void printResults(int sortCase, int[] data) {
+	private static void processFile(String file, int[] data, int n, int sortCase) throws Exception {
 		
+		System.out.println();
+		LOGGER.info("--------------------------------------");
+		LOGGER.info("FILENAME: {}", file);
+
 		Sort sort;
-		
 		int maxDataLength = 500;
-		if (data.length >= maxDataLength) {
-			LOGGER.info("data too large to print (length >= "+maxDataLength+") - truncating output.");
-			LOGGER.info("unsorted data: " + Arrays.toString(data).substring(0, Math.min(data.length, 100)) + " ...");
+		
+		LOGGER.debug("n={}, n^2={}, n*log2(n)={}",n, (n*n), (n*(int) (Math.log(n) / Math.log(2))));
+		LOGGER.info("\tSORT CASE: {}", sortCase);
+		if (n <= maxDataLength) {
+			LOGGER.debug("\tunsorted data: " + Arrays.toString(data));
 			
-			sort = executeSort(sortCase, data);
+			sort = executeSort(sortCase, data, n);
 			
-			LOGGER.info("sorted data: " + Arrays.toString(sort.data).substring(0, Math.min(data.length, 100)) + " ...");
+			LOGGER.debug("\tsorted data: " + Arrays.toString(sort.data));
 		} else {
-			LOGGER.info("unsorted data: " + Arrays.toString(data));
+			LOGGER.trace("\tdata too large to print (length >= "+maxDataLength+") - truncating output.");
+			LOGGER.debug("\tunsorted data: " + Arrays.toString(data).substring(0, Math.min(n, 100)) + " ...");
 			
-			sort = executeSort(sortCase, data);
+			sort = executeSort(sortCase, data, n);
 			
-			LOGGER.info("sorted data: " + Arrays.toString(sort.data));
+			LOGGER.debug("\tsorted data: " + Arrays.toString(sort.data).substring(0, Math.min(n, 100)) + " ...");
 		}
 		
 		// print number of comparisons and exchanges
-		LOGGER.info("------------------------------");
-		LOGGER.info("number of data elements: " + data.length);
-		LOGGER.info("number of comparisons: " + sort.comparisons);
-		LOGGER.info("number of exchanges: " + sort.exchanges);
-		
+		LOGGER.info("\tnumber of comparisons: " + sort.comparisons);
+		LOGGER.info("\tnumber of exchanges: " + sort.exchanges);
+			
 	}
 
 	/**
@@ -149,9 +109,9 @@ public class Main {
 	 * @param sortCase
 	 * @param data
 	 */
-	private static Sort executeSort(int sortCase, int[] data) {
+	private static Sort executeSort(int sortCase, int[] data, int dataLength) {
 		
-		Sort sort = null;
+		Sort sort;
 		
 		if (sortCase == 1) { // quick sort with first item as pivot and normal stop
 			sort = new QuickSort(data);
@@ -161,14 +121,16 @@ public class Main {
 			sort = new QuickSortToInsertionSort(data, 50);
 		} else if (sortCase == 4) { // quick sort with medium-of-three as pivot and normal stop
 			sort = new QuickSortMedianPivot(data);
-		} else if (sortCase == 5) { // TODO: heap sort
-			
+		} else if (sortCase == 5) { // heap sort
+			sort = new HeapSort(data);
+		} else {
+			sort = new Sort(data); // default to super class
 		}
 		
 		if (sort instanceof QuickSort) {
-			((QuickSort) sort).quickSort(0, data.length - 1);
+			((QuickSort) sort).quickSort(0, dataLength - 1);
 		} else if (sort instanceof HeapSort) {
-			// TODO: do heap sort
+			((HeapSort) sort).heapSort();
 		}
 		
 		return sort;
@@ -238,6 +200,22 @@ public class Main {
 		} else {
 			return true;
 		}
+	}
+	
+	private static StackLinked filesInFolder(final File folder) throws Exception {
+		StackLinked files = new StackLinked();
+		StackLinked subfiles;
+	    for (final File fileEntry : folder.listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	        	subfiles = filesInFolder(fileEntry);
+	        	while (!subfiles.isEmpty()) {
+	        		files.push(subfiles.pop());
+	        	}
+	        } else {
+	            files.push(fileEntry.getPath());
+	        }
+	    }
+		return files;
 	}
 
 }

@@ -1,46 +1,32 @@
 package sorting;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Sort {
+	
+	public static Logger LOGGER = LogManager.getLogger(Sort.class);
 
 	int[] data;
 	int comparisons;
 	int exchanges;
 
 	public Sort(int[] data) {
-		this.data = data;
+		this.data = data.clone(); // clone the data
 		this.comparisons = 0;
 		this.exchanges = 0;
 	}
-
+	
 	/**
-	 * executes insertion sort on range of data between low and high index (inclusive)
+	 * Method swaps the values located in the provided indexes
 	 * 
-	 * @param lowIndex
-	 * @param highIndex
+	 * @param i1
+	 * @param i2
 	 */
-	public void insertionSort(int lowIndex, int highIndex) {
-		int i = lowIndex;
-		int j = lowIndex;
-		int temp;  // temp variable for swap
-
-		for (i = lowIndex + 1; i <= highIndex; i++) {
-			j = i;
-			
-			if (j > 0 && this.data[j] >= this.data[j - 1]) {
-				this.comparisons++; // increment comparisons
-			} else {
-				do {
-					this.comparisons++; // increment comparisons
-					this.exchanges++; // increment exchanges
-
-					// swap this.data[j] and this.data[j - 1]
-					temp = this.data[j];
-					this.data[j] = this.data[j - 1];
-					this.data[j - 1] = temp;
-					j--;
-				} while (j > 0 && this.data[j] < this.data[j - 1]);
-			}
-		}
+	public void swap(int i1, int i2) {
+		int temp = this.data[i1];
+		this.data[i1] = this.data[i2];
+		this.data[i2] = temp;
 	}
 
 }

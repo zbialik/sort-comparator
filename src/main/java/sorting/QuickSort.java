@@ -1,11 +1,6 @@
 package sorting;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class QuickSort extends Sort {
-	
-	protected static Logger LOGGER = LogManager.getLogger(QuickSort.class);
 
 	public QuickSort(int[] data) {
 		super(data);
@@ -74,9 +69,7 @@ public class QuickSort extends Sort {
 				this.exchanges++; // count exchanges for analysis
 				
 				// swap this.data[lowIndex] and this.data[highIndex]
-				int temp = this.data[lowIndex];
-				this.data[lowIndex] = this.data[highIndex];
-				this.data[highIndex] = temp;
+				this.swap(lowIndex, highIndex);
 
 				// update lowIndex and highIndex
 				lowIndex++;

@@ -22,12 +22,9 @@ public class QuickSortToInsertionSort extends QuickSort {
 		}
 		
 		int partitionSize = highIndex - lowIndex;
-
 		
 		if (partitionSize < this.partitionThreshold) {
 			
-			LOGGER.trace("low partition has size {}, which is less than {} - finishing with insertion sort.", 
-					partitionSize, this.partitionThreshold);
 			this.insertionSort(lowIndex, highIndex); // execute insertion sort
 			
 		} else {
@@ -40,6 +37,35 @@ public class QuickSortToInsertionSort extends QuickSort {
 			
 			// Recursively sort high partition (lowEndIndex + 1 to highIndex)
 			quickSort(lowEndIndex + 1, highIndex);
+		}
+	}
+	
+	/**
+	 * Method executes insertion sort on range of data between low and high index (inclusive)
+	 * 
+	 * @param lowIndex
+	 * @param highIndex
+	 */
+	public void insertionSort(int lowIndex, int highIndex) {
+		int i = lowIndex;
+		int j = lowIndex;
+
+		for (i = lowIndex + 1; i <= highIndex; i++) {
+			j = i;
+			
+			if (j > 0 && this.data[j] >= this.data[j - 1]) {
+				this.comparisons++; // increment comparisons
+			} else {
+				do {
+					this.comparisons++; // increment comparisons
+					this.exchanges++; // increment exchanges
+
+					// swap this.data[j] and this.data[j - 1]
+					this.swap(j, j-1);
+					
+					j--;
+				} while (j > 0 && this.data[j] < this.data[j - 1]);
+			}
 		}
 	}
 
