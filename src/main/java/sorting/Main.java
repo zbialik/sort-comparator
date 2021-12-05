@@ -74,7 +74,6 @@ public class Main {
 		StackLinked inputFiles = filesInFolder(new File(inputsDir));
 		int[] sortCases = {1, 2, 3, 4, 5}; // iterate for each sorting case defined in lab assignment
 		
-		
 		// function variables
 		String file;
 		int[] data;
