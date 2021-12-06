@@ -79,13 +79,16 @@ public class Main {
 		// function variables
 		String file;
 		int[] data;
+		String dataOrder; // retrieved from folder hierarchy of inputs (e.g. ascending, random, reverse)
 		
 		while (!inputFiles.isEmpty()) {
 			file = (String) inputFiles.pop();
 			data = readFile(file); // grab data
+			dataOrder = getDataOrder(file); // returns the order category for the input (uses parent folder to determine)
+			
 			for (int sortCase : sortCases ) {
 				sort = processData(file, outputsDir, data, data.length, sortCase);
-				analysis.append(new OutputData(getSortMethodName(sortCase), sort));
+				analysis.append(new OutputData(getSortMethodName(sortCase), dataOrder, sort));
 			}
 		}
 		
@@ -93,6 +96,14 @@ public class Main {
 		writeAnalysisData(outputWriter, analysis);
 	}
 	
+	private static String getDataOrder(String file) {
+		int index=file.lastIndexOf('/');
+		String output = file.substring(0,index);
+		index=output.lastIndexOf('/');
+		output = output.substring(index+1, output.length());
+		return output;
+	}
+
 	/**
 	 * Method sorts the provided data using an algorithm identified with sortCase
 	 * 
@@ -260,7 +271,7 @@ public class Main {
 	 */
 	private static void writeAnalysisData(BufferedWriter outputWriter, ListLinked outputData) throws Exception {
 		outputWriter.write("");
-		outputWriter.write(String.format("%30s %20s %20s %20s \r\n", "SORT NAME", "DATA SIZE", "COMPARISONS", "EXCHANGES"));
+		outputWriter.write(String.format("%30s %20s %20s %20s %20s \r\n", "SORT NAME", "SORT ORDER", "DATA SIZE", "COMPARISONS", "EXCHANGES"));
 		OutputData data;
 		while (!outputData.isEmpty()) {
 			data = (OutputData) outputData.remove(0);

@@ -1,116 +1,116 @@
-                     SORT NAME            DATA SIZE          COMPARISONS            EXCHANGES 
-         quicksort-first-index                 5000             12497500                    0 
-    quicksort-to-insertion-100                 5000             12492649                    0 
-     quicksort-to-insertion-50                 5000             12496324                    0 
-         quicksort-median-of-3                 5000                51810                 9998 
-                      heapsort                 5000               190296                60932 
-         quicksort-first-index                10000             49995000                    0 
-    quicksort-to-insertion-100                10000             49990149                    0 
-     quicksort-to-insertion-50                10000             49993824                    0 
-         quicksort-median-of-3                10000               113618                19998 
-                      heapsort                10000               410868               131956 
-         quicksort-first-index                 2000              1999000                    0 
-    quicksort-to-insertion-100                 2000              1994149                    0 
-     quicksort-to-insertion-50                 2000              1997824                    0 
-         quicksort-median-of-3                 2000                17954                 3998 
-                      heapsort                 2000                66900                21300 
-         quicksort-first-index                 1000               499500                    0 
-    quicksort-to-insertion-100                 1000               494649                    0 
-     quicksort-to-insertion-50                 1000               498324                    0 
-         quicksort-median-of-3                 1000                 7978                 1998 
-                      heapsort                 1000                30624                 9708 
-         quicksort-first-index                  500               124750                    0 
-    quicksort-to-insertion-100                  500               119899                    0 
-     quicksort-to-insertion-50                  500               123574                    0 
-         quicksort-median-of-3                  500                 3490                  998 
-                      heapsort                  500                13812                 4354 
-         quicksort-first-index                   50                 1225                    0 
-    quicksort-to-insertion-100                   50                   49                    0 
-     quicksort-to-insertion-50                   50                   49                    0 
-         quicksort-median-of-3                   50                  188                   98 
-                      heapsort                   50                  885                  270 
-         quicksort-first-index                 2000              1998000                 1000 
-    quicksort-to-insertion-100                 2000              1998050                10850 
-     quicksort-to-insertion-50                 2000              1998025                 3425 
-         quicksort-median-of-3                 2000                33478                 6980 
-                      heapsort                 2000                59124                18708 
-         quicksort-first-index                  500               124500                  250 
-    quicksort-to-insertion-100                  500               124550                10100 
-     quicksort-to-insertion-50                  500               124525                 2675 
-         quicksort-median-of-3                  500                 6257                 1734 
-                      heapsort                  500                11778                 3676 
-         quicksort-first-index                 5000             12495000                 2500 
-    quicksort-to-insertion-100                 5000             12495050                12350 
-     quicksort-to-insertion-50                 5000             12495025                 4925 
-         quicksort-median-of-3                 5000                98209                17478 
-                      heapsort                 5000               167808                53436 
-         quicksort-first-index                   50                 1200                   25 
-    quicksort-to-insertion-100                   50                 1225                 2450 
-     quicksort-to-insertion-50                   50                 1225                 2450 
-         quicksort-median-of-3                   50                  263                  165 
-                      heapsort                   50                  696                  207 
-         quicksort-first-index                10000             49990000                 5000 
-    quicksort-to-insertion-100                10000             49990050                14850 
-     quicksort-to-insertion-50                10000             49990025                 7425 
-         quicksort-median-of-3                10000               217767                34976 
-                      heapsort                10000               365088               116696 
-         quicksort-first-index                 1000               499000                  500 
-    quicksort-to-insertion-100                 1000               499050                10350 
-     quicksort-to-insertion-50                 1000               499025                 2925 
-         quicksort-median-of-3                 1000                14524                 3482 
-                      heapsort                 1000                26448                 8316 
-         quicksort-first-index                 2000                22043                 5256 
-    quicksort-to-insertion-100                 2000                43939                63991 
-     quicksort-to-insertion-50                 2000                31992                36851 
-         quicksort-median-of-3                 2000                16669                 9681 
-                      heapsort                 2000                63513                20171 
-         quicksort-first-index                  500                 3804                 1062 
-    quicksort-to-insertion-100                  500                 8879                14346 
-     quicksort-to-insertion-50                  500                 6150                 8476 
-         quicksort-median-of-3                  500                 3312                 2165 
-                      heapsort                  500                12846                 4032 
-         quicksort-first-index                 5000                59947                14493 
-    quicksort-to-insertion-100                 5000               119847               174461 
-     quicksort-to-insertion-50                 5000                81805                87516 
-         quicksort-median-of-3                 5000                45614                25563 
-                      heapsort                 5000               178974                57158 
-         quicksort-first-index                10000               119312                31370 
-    quicksort-to-insertion-100                10000               245417               365168 
-     quicksort-to-insertion-50                10000               165047               182731 
-         quicksort-median-of-3                10000                95742                53817 
-                      heapsort                10000               387255               124085 
-         quicksort-first-index                 1000                 8360                 2384 
-    quicksort-to-insertion-100                 1000                17935                29006 
-     quicksort-to-insertion-50                 1000                12852                17093 
-         quicksort-median-of-3                 1000                 6868                 4576 
-                      heapsort                 1000                28743                 9081 
-         quicksort-first-index                10000               122445                31210 
-    quicksort-to-insertion-100                10000               247425               363854 
-     quicksort-to-insertion-50                10000               168977               185929 
-         quicksort-median-of-3                10000                93854                53608 
-                      heapsort                10000               387264               124088 
-         quicksort-first-index                 2000                19457                 5178 
-    quicksort-to-insertion-100                 2000                45108                72516 
-     quicksort-to-insertion-50                 2000                28175                34763 
-         quicksort-median-of-3                 2000                15120                 9618 
-                      heapsort                 2000                63564                20188 
-         quicksort-first-index                 5000                56767                14831 
-    quicksort-to-insertion-100                 5000               117992               174700 
-     quicksort-to-insertion-50                 5000                80225                88839 
-         quicksort-median-of-3                 5000                44437                25499 
-                      heapsort                 5000               178935                57145 
-         quicksort-first-index                   50                  204                   70 
-    quicksort-to-insertion-100                   50                  635                 1264 
-     quicksort-to-insertion-50                   50                  635                 1264 
-         quicksort-median-of-3                   50                  165                  176 
-                      heapsort                   50                  801                  242 
-         quicksort-first-index                 1000                 8983                 2341 
-    quicksort-to-insertion-100                 1000                20163                32417 
-     quicksort-to-insertion-50                 1000                14502                19246 
-         quicksort-median-of-3                 1000                 7135                 4538 
-                      heapsort                 1000                28608                 9036 
-         quicksort-first-index                  500                 3978                 1051 
-    quicksort-to-insertion-100                  500                10570                18386 
-     quicksort-to-insertion-50                  500                 6560                 9378 
-         quicksort-median-of-3                  500                 3804                 2129 
-                      heapsort                  500                12891                 4047 
+                     SORT NAME           SORT ORDER            DATA SIZE          COMPARISONS            EXCHANGES 
+         quicksort-first-index            ascending                 5000             12497500                    0 
+    quicksort-to-insertion-100            ascending                 5000             12492649                    0 
+     quicksort-to-insertion-50            ascending                 5000             12496324                    0 
+         quicksort-median-of-3            ascending                 5000                51810                 9998 
+                      heapsort            ascending                 5000               190296                60932 
+         quicksort-first-index            ascending                10000             49995000                    0 
+    quicksort-to-insertion-100            ascending                10000             49990149                    0 
+     quicksort-to-insertion-50            ascending                10000             49993824                    0 
+         quicksort-median-of-3            ascending                10000               113618                19998 
+                      heapsort            ascending                10000               410868               131956 
+         quicksort-first-index            ascending                 2000              1999000                    0 
+    quicksort-to-insertion-100            ascending                 2000              1994149                    0 
+     quicksort-to-insertion-50            ascending                 2000              1997824                    0 
+         quicksort-median-of-3            ascending                 2000                17954                 3998 
+                      heapsort            ascending                 2000                66900                21300 
+         quicksort-first-index            ascending                 1000               499500                    0 
+    quicksort-to-insertion-100            ascending                 1000               494649                    0 
+     quicksort-to-insertion-50            ascending                 1000               498324                    0 
+         quicksort-median-of-3            ascending                 1000                 7978                 1998 
+                      heapsort            ascending                 1000                30624                 9708 
+         quicksort-first-index            ascending                  500               124750                    0 
+    quicksort-to-insertion-100            ascending                  500               119899                    0 
+     quicksort-to-insertion-50            ascending                  500               123574                    0 
+         quicksort-median-of-3            ascending                  500                 3490                  998 
+                      heapsort            ascending                  500                13812                 4354 
+         quicksort-first-index            ascending                   50                 1225                    0 
+    quicksort-to-insertion-100            ascending                   50                   49                    0 
+     quicksort-to-insertion-50            ascending                   50                   49                    0 
+         quicksort-median-of-3            ascending                   50                  188                   98 
+                      heapsort            ascending                   50                  885                  270 
+         quicksort-first-index              reverse                 2000              1998000                 1000 
+    quicksort-to-insertion-100              reverse                 2000              1998050                10850 
+     quicksort-to-insertion-50              reverse                 2000              1998025                 3425 
+         quicksort-median-of-3              reverse                 2000                33478                 6980 
+                      heapsort              reverse                 2000                59124                18708 
+         quicksort-first-index              reverse                  500               124500                  250 
+    quicksort-to-insertion-100              reverse                  500               124550                10100 
+     quicksort-to-insertion-50              reverse                  500               124525                 2675 
+         quicksort-median-of-3              reverse                  500                 6257                 1734 
+                      heapsort              reverse                  500                11778                 3676 
+         quicksort-first-index              reverse                 5000             12495000                 2500 
+    quicksort-to-insertion-100              reverse                 5000             12495050                12350 
+     quicksort-to-insertion-50              reverse                 5000             12495025                 4925 
+         quicksort-median-of-3              reverse                 5000                98209                17478 
+                      heapsort              reverse                 5000               167808                53436 
+         quicksort-first-index              reverse                   50                 1200                   25 
+    quicksort-to-insertion-100              reverse                   50                 1225                 2450 
+     quicksort-to-insertion-50              reverse                   50                 1225                 2450 
+         quicksort-median-of-3              reverse                   50                  263                  165 
+                      heapsort              reverse                   50                  696                  207 
+         quicksort-first-index              reverse                10000             49990000                 5000 
+    quicksort-to-insertion-100              reverse                10000             49990050                14850 
+     quicksort-to-insertion-50              reverse                10000             49990025                 7425 
+         quicksort-median-of-3              reverse                10000               217767                34976 
+                      heapsort              reverse                10000               365088               116696 
+         quicksort-first-index              reverse                 1000               499000                  500 
+    quicksort-to-insertion-100              reverse                 1000               499050                10350 
+     quicksort-to-insertion-50              reverse                 1000               499025                 2925 
+         quicksort-median-of-3              reverse                 1000                14524                 3482 
+                      heapsort              reverse                 1000                26448                 8316 
+         quicksort-first-index            duplicate                 2000                22043                 5256 
+    quicksort-to-insertion-100            duplicate                 2000                43939                63991 
+     quicksort-to-insertion-50            duplicate                 2000                31992                36851 
+         quicksort-median-of-3            duplicate                 2000                16669                 9681 
+                      heapsort            duplicate                 2000                63513                20171 
+         quicksort-first-index            duplicate                  500                 3804                 1062 
+    quicksort-to-insertion-100            duplicate                  500                 8879                14346 
+     quicksort-to-insertion-50            duplicate                  500                 6150                 8476 
+         quicksort-median-of-3            duplicate                  500                 3312                 2165 
+                      heapsort            duplicate                  500                12846                 4032 
+         quicksort-first-index            duplicate                 5000                59947                14493 
+    quicksort-to-insertion-100            duplicate                 5000               119847               174461 
+     quicksort-to-insertion-50            duplicate                 5000                81805                87516 
+         quicksort-median-of-3            duplicate                 5000                45614                25563 
+                      heapsort            duplicate                 5000               178974                57158 
+         quicksort-first-index            duplicate                10000               119312                31370 
+    quicksort-to-insertion-100            duplicate                10000               245417               365168 
+     quicksort-to-insertion-50            duplicate                10000               165047               182731 
+         quicksort-median-of-3            duplicate                10000                95742                53817 
+                      heapsort            duplicate                10000               387255               124085 
+         quicksort-first-index            duplicate                 1000                 8360                 2384 
+    quicksort-to-insertion-100            duplicate                 1000                17935                29006 
+     quicksort-to-insertion-50            duplicate                 1000                12852                17093 
+         quicksort-median-of-3            duplicate                 1000                 6868                 4576 
+                      heapsort            duplicate                 1000                28743                 9081 
+         quicksort-first-index               random                10000               122445                31210 
+    quicksort-to-insertion-100               random                10000               247425               363854 
+     quicksort-to-insertion-50               random                10000               168977               185929 
+         quicksort-median-of-3               random                10000                93854                53608 
+                      heapsort               random                10000               387264               124088 
+         quicksort-first-index               random                 2000                19457                 5178 
+    quicksort-to-insertion-100               random                 2000                45108                72516 
+     quicksort-to-insertion-50               random                 2000                28175                34763 
+         quicksort-median-of-3               random                 2000                15120                 9618 
+                      heapsort               random                 2000                63564                20188 
+         quicksort-first-index               random                 5000                56767                14831 
+    quicksort-to-insertion-100               random                 5000               117992               174700 
+     quicksort-to-insertion-50               random                 5000                80225                88839 
+         quicksort-median-of-3               random                 5000                44437                25499 
+                      heapsort               random                 5000               178935                57145 
+         quicksort-first-index               random                   50                  204                   70 
+    quicksort-to-insertion-100               random                   50                  635                 1264 
+     quicksort-to-insertion-50               random                   50                  635                 1264 
+         quicksort-median-of-3               random                   50                  165                  176 
+                      heapsort               random                   50                  801                  242 
+         quicksort-first-index               random                 1000                 8983                 2341 
+    quicksort-to-insertion-100               random                 1000                20163                32417 
+     quicksort-to-insertion-50               random                 1000                14502                19246 
+         quicksort-median-of-3               random                 1000                 7135                 4538 
+                      heapsort               random                 1000                28608                 9036 
+         quicksort-first-index               random                  500                 3978                 1051 
+    quicksort-to-insertion-100               random                  500                10570                18386 
+     quicksort-to-insertion-50               random                  500                 6560                 9378 
+         quicksort-median-of-3               random                  500                 3804                 2129 
+                      heapsort               random                  500                12891                 4047 
