@@ -15,60 +15,56 @@ public class HeapSort extends Sort {
 		int numbersSize = this.data.length;
 		
 		// heapify data
-		maxHeapRecursiveHeapify(numbersSize / 2 - 1);
+		recursiveHeapify(numbersSize / 2 - 1);
 
 		// percolate down heap
-		maxHeapRecursiveSort(numbersSize - 1);
+		recursiveSortMaxHeap(numbersSize - 1);
 	}
 
 	/**
 	 * Method percolates down max heap
 	 * 
-	 * Reference: zyBook ISBN: 979-8-203-90262-7 (Section 6.12: Heaps using arrays)
+	 * Reference: https://www.geeksforgeeks.org/heap-sort/
 	 * 
 	 * @param nodeIndex
 	 * @param arraySize
 	 */
-	private void maxHeapPercolateDown(int nodeIndex, int arraySize) {
-		int childIndex = 2 * nodeIndex + 1;
-		int value = this.data[nodeIndex];
-
-		while (childIndex < arraySize) {
-			
-			// find the max among the node and all the node's children
-			int maxValue = value;
-			int maxIndex = -1;
-			
-			for (int i = 0; i < 2 && i + childIndex < arraySize; i++) {
-				
-				this.comparisons++;
-				if (this.data[i + childIndex] > maxValue) {
-					maxValue = this.data[i + childIndex];
-					maxIndex = i + childIndex;
-				}
-			}
-
-			this.comparisons++;
-			if (maxValue == value) {
-				return;
-			} else {
-				this.swap(nodeIndex, maxIndex);
-				nodeIndex = maxIndex;
-				childIndex = 2 * nodeIndex + 1;
-			}
-		}
-	}
+    private void heapify(int i, int n) {
+        int largest = i; // Initialize largest as root
+        int l = 2 * i + 1; // left = 2*i + 1
+        int r = 2 * i + 2; // right = 2*i + 2
+ 
+        // If left child is larger than root
+    	this.comparisons++;
+        if (l < n && this.data[l] > this.data[largest]) {
+            largest = l;
+        }
+ 
+        // If right child is larger than largest so far
+        this.comparisons++;
+        if (r < n && this.data[r] > this.data[largest]) {
+            largest = r;
+        }
+ 
+        // If largest is not root
+        if (largest != i) {
+        	this.swap(i, largest);
+ 
+            // Recursively heapify the affected sub-tree
+            heapify(largest, n);
+        }
+    }
 	
 	/**
 	 * Method recursively calls itself to heapify the data
 	 * 
 	 * @param arraySize
 	 */
-	private void maxHeapRecursiveHeapify(int nodeIndex) {
+	private void recursiveHeapify(int nodeIndex) {
 		
 		if (nodeIndex >= 0) {
-			maxHeapPercolateDown(nodeIndex, this.data.length); // percolate down
-			maxHeapRecursiveHeapify(nodeIndex - 1); // recursive call to do again
+			heapify(nodeIndex, this.data.length); // percolate down
+			recursiveHeapify(nodeIndex - 1); // recursive call to do again
 		}
 	}
 	
@@ -78,12 +74,12 @@ public class HeapSort extends Sort {
 	 * 
 	 * @param arraySize
 	 */
-	private void maxHeapRecursiveSort(int arraySize) {
+	private void recursiveSortMaxHeap(int arraySize) {
 		
 		if (arraySize > 0) {
 			this.swap(0, arraySize); // swap root with leaf
-			maxHeapPercolateDown(0, arraySize); // percolate down
-			maxHeapRecursiveSort(arraySize - 1); // recursive call to do again
+			heapify(0, arraySize); // percolate down
+			recursiveSortMaxHeap(arraySize - 1); // recursive call to do again
 			
 		}
 	}

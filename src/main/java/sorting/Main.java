@@ -117,7 +117,7 @@ public class Main {
 		output.append("Data Size (N): " + n);
 		output.append("N^2: " + n*n);
 		output.append("(N+1)*(N/2): " + ((n+1)*(n/2)));
-		output.append("N*log2(N): " + (n*(int) (Math.log(n) / Math.log(2))));
+		output.append("N*log2(N): " + (n* ((Math.log(n) / Math.log(2)))));
 		output.append("");
 		
 		if (n <= maxDataLength) {
