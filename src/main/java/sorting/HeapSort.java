@@ -47,9 +47,9 @@ public class HeapSort extends Sort {
         }
  
         // If largest is not root
+        this.comparisons++;
         if (largest != i) {
         	this.swap(i, largest);
- 
             // Recursively heapify the affected sub-tree
             heapify(largest, n);
         }

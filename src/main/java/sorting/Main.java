@@ -73,6 +73,8 @@ public class Main {
 		
 		StackLinked inputFiles = filesInFolder(new File(inputsDir));
 		int[] sortCases = {1, 2, 3, 4, 5}; // iterate for each sorting case defined in lab assignment
+		Sort sort;
+		ListLinked analysis = new ListLinked();
 		
 		// function variables
 		String file;
@@ -82,9 +84,13 @@ public class Main {
 			file = (String) inputFiles.pop();
 			data = readFile(file); // grab data
 			for (int sortCase : sortCases ) {
-				processData(file, outputsDir, data, data.length, sortCase);
+				sort = processData(file, outputsDir, data, data.length, sortCase);
+				analysis.append(new OutputData(getSortMethodName(sortCase), sort));
 			}
 		}
+		
+		BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outputsDir + "/report.dat")); // output file
+		writeAnalysisData(outputWriter, analysis);
 	}
 	
 	/**
@@ -102,7 +108,7 @@ public class Main {
 	 * @param sortCase
 	 * @throws Exception
 	 */
-	private static void processData(String file, String outputsDir, int[] data, int n, int sortCase) throws Exception {
+	private static Sort processData(String file, String outputsDir, int[] data, int n, int sortCase) throws Exception {
 		
 		Sort sort;
 		int maxDataLength = 50;
@@ -117,7 +123,7 @@ public class Main {
 		output.append("Data Size (N): " + n);
 		output.append("N^2: " + n*n);
 		output.append("(N+1)*(N/2): " + ((n+1)*(n/2)));
-		output.append("N*log2(N): " + (n* ((Math.log(n) / Math.log(2)))));
+		output.append("3*N*log2(N): " + (3 * n* ((Math.log(n) / Math.log(2)))));
 		output.append("");
 		
 		if (n <= maxDataLength) {
@@ -148,7 +154,9 @@ public class Main {
 	    }
 	    
 	    String outputFile = outputsDir + "/" + file.substring(index + 1,file.length());
-		output(outputFile, output); // print and write output
+	    writeOutput(outputFile, output); // print and write output
+	    
+	    return sort;
 	}
 	
 	/**
@@ -224,12 +232,12 @@ public class Main {
 	}
 
 	/**
-	 * Method writes 
+	 * Method writes output files and prints output to console
 	 * @param outputFile
-	 * @param data
+	 * @param content
 	 * @throws Exception 
 	 */
-	private static void output(String outputFile, ListLinked content) throws Exception {
+	private static void writeOutput(String outputFile, ListLinked content) throws Exception {
 
 		BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outputFile)); // output file
 		outputWriter.write("");
@@ -239,6 +247,24 @@ public class Main {
 			line = (String) content.remove(0);
 			LOGGER.info(line);
 			outputWriter.write(line + "\n");
+		}
+		
+		outputWriter.close();
+	}
+	
+	/**
+	 * Method writes report of data for later analysis
+	 * @param outputFile
+	 * @param outputData
+	 * @throws Exception 
+	 */
+	private static void writeAnalysisData(BufferedWriter outputWriter, ListLinked outputData) throws Exception {
+		outputWriter.write("");
+		outputWriter.write(String.format("%30s %20s %20s %20s \r\n", "SORT NAME", "DATA SIZE", "COMPARISONS", "EXCHANGES"));
+		OutputData data;
+		while (!outputData.isEmpty()) {
+			data = (OutputData) outputData.remove(0);
+			outputWriter.write(data.toString());
 		}
 		
 		outputWriter.close();

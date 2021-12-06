@@ -6,9 +6,9 @@ Description: HeapSort - Heapify array then percolate down heap sort
 Data Size (N): 5000
 N^2: 25000000
 (N+1)*(N/2): 12502500
-N*log2(N): 61438.561897747255
+3*N*log2(N): 184315.68569324174
 
 Original Data: [8206, 2967, 1590, 1253, 8797, 550, 2944, 6843, 770, 7433, 8621, 4304, 3317, 9069, 5397, 8007, 5737, ...
 Sorted Data: [3, 4, 9, 9, 11, 13, 14, 15, 15, 16, 16, 16, 19, 20, 21, 21, 22, 24, 24, 25, 25, 27, 28, 32, 33, 35, ...
-# of Comparisons: 119290
+# of Comparisons: 178935
 # of Exchanges: 57145

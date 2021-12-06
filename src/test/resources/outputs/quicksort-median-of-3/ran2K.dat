@@ -6,7 +6,7 @@ Description: QuickSort - Select the median-of-three as the pivot. Treat partitio
 Data Size (N): 2000
 N^2: 4000000
 (N+1)*(N/2): 2001000
-N*log2(N): 20000
+3*N*log2(N): 65794.70570797252
 
 Original Data: [212, 14, 150, 1653, 1, 1398, 1921, 1670, 1362, 284, 699, 1166, 297, 1973, 6, 477, 1946, 1752, 1862, ...
 Sorted Data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,  ...
