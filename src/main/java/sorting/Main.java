@@ -271,7 +271,7 @@ public class Main {
 	 */
 	private static void writeAnalysisData(BufferedWriter outputWriter, ListLinked outputData) throws Exception {
 		outputWriter.write("");
-		outputWriter.write(String.format("%30s %20s %20s %20s %20s \r\n", "SORT NAME", "SORT ORDER", "DATA SIZE", "COMPARISONS", "EXCHANGES"));
+		outputWriter.write((new OutputData()).toStringDataTypes());
 		OutputData data;
 		while (!outputData.isEmpty()) {
 			data = (OutputData) outputData.remove(0);

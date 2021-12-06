@@ -8,6 +8,9 @@ public class OutputData {
 	public int comparisons;
 	public int exchanges;
 	
+	public OutputData() {
+	}
+	
 	public OutputData(String name, String order, Sort sort) {
 		this.sortName = name;
 		this.dataOrder = order;
@@ -26,6 +29,10 @@ public class OutputData {
 	
 	public String toString() {
 		return String.format("%30s %20s %20s %20s %20s \r\n", this.sortName, this.dataOrder, this.dataSize, this.comparisons, this.exchanges);
+	}
+	
+	public String toStringDataTypes() {
+		return String.format("%30s %20s %20s %20s %20s \r\n", "SORT NAME", "SORT ORDER", "DATA SIZE", "COMPARISONS", "EXCHANGES");
 	}
 
 }
