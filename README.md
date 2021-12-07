@@ -52,4 +52,3 @@ The generated outputs will be stored in subfolders in the outputs folder provide
 
 Lastly, the program will also output a `report.dat` file in the outputs folder provided. It will show performance metrics for each sort algorithm and also adds a column for `SORT ORDER` that is simply the folder containing the input file. This makes it easier to analyze the data afterward, but requires that you place the data files in appropriate subfolders in the inputs directory provided. 
 
-
