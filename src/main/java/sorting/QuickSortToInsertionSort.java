@@ -59,7 +59,6 @@ public class QuickSortToInsertionSort extends QuickSort {
 			} else {
 				do {
 					this.comparisons++; // increment comparisons
-					this.exchanges++; // increment exchanges
 
 					// swap this.data[j] and this.data[j - 1]
 					this.swap(j, j-1);
